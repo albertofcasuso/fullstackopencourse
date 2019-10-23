@@ -1,0 +1,10 @@
+browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+note over browser:
+preventDefault() prevents 3xx redirection.
+the event handler creates a new note 
+sends it to the server and
+the server responds with {note created}
+inside the server, redrawNotes() refreshes the viewer
+end note
+server-->browser: 
+
