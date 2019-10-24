@@ -13,7 +13,13 @@ const Statistic = (props) =>{
 }
 
 const Button = (props) => {
-    
+    const text = props.text
+    const handleClick = props.handleClick
+    return(
+        <div>
+                <button onClick={handleClick}>{text}</button>
+        </div>
+    )
 }
 
 
@@ -77,9 +83,10 @@ const App = () => {
   return (
     <div>
       <h1>give feedback</h1>
-      <button onClick={setG()}>good</button>
-      <button onClick={setN()}>neutral</button>
-      <button onClick={setB()}>bad</button>
+      <Button text='good' handleClick={setG()}/>
+      <Button text='bad'handleClick={setB()}/>
+      <Button text='neutral'handleClick={setN()}/>
+      
       <Statistics good={good} neutral={neutral} bad={bad} total={total} average={average}/>
     </div>
   )
