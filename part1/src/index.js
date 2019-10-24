@@ -7,7 +7,16 @@ const Statistics = (props) => {
     const bad = props.bad
     const total = props.total
     const average = props.average
-    
+
+    if (total === 0) {
+    return (
+      <div>
+          <h1>Statistics</h1>
+        <p>No votes yet</p>
+      </div>
+    )
+  }
+
     return(
         <div>
         <h1>Statistics</h1>
