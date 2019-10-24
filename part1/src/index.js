@@ -1,66 +1,43 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-
-
-const Header = (props) => {
-    return(
-        <h1>{props.course.name}</h1>
-    )
-}
-
-const Part = (props) => {
-    const all = props.parts.map(value => <p>{value.name} {value.exercises}</p>)
-    return (
-        all
-    )
-}
-
-const Content = (props) => {
-    return(
-        <div>
-          <Part parts={props.course.parts}/>
-        </div>
-    )
-}
-
-const Total = (props) => {
-    let a= 0
-    props.course.parts.forEach(value => {
-        a+=value.exercises
-    })
-    return (
-        <p>Number of exercises {a}</p>
-    )
-}
+import React, { useState } from 'react'
+import ReactDOM from 'react-dom'
 
 const App = () => {
-    const course = {
-      name: 'Half Stack application development',
-      parts: [
-        {
-          name: 'Fundamentals of React',
-          exercises: 10
-        },
-        {
-          name: 'Using props to pass data',
-          exercises: 7
-        },
-        {
-          name: 'State of a component',
-          exercises: 14
-        }
-      ]
-    }
+  // save clicks of each button to own state
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+
+
+  const setG = (plus) => () =>{
+      setGood(plus)
+  }
+
+  const setN = (plus) => () =>{
+      setNeutral(plus)
+  }
+  const setB = (plus) => () =>{
+      setBad(plus)
+  }
+
   return (
     <div>
-      <Header course={course}/>
-      <Content course={course}/>
-      <Total course={course}/>
+      <h1>give feedback</h1>
+      <button onClick={setG(good + 1)}>good</button>
+      <button onClick={setN(neutral + 1)}>neutral</button>
+      <button onClick={setB(bad + 1)}>bad</button>
+        <h1>Statistics</h1>
+        <p>good = {good}</p>
+        <p>neutral = {neutral}</p>
+        <p>bad  = {bad}</p>
+        <p>average</p>
+        <p>positive</p>
     </div>
   )
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App />,
+  document.getElementById('root')
+)
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
