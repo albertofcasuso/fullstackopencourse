@@ -1,12 +1,18 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
+
 const App = (props) => {
   const [selected, setSelected] = useState(0)
 
+  const click = () => () =>{
+      setSelected(Math.floor(Math.random() * anecdotes.length))
+  }
+
   return (
     <div>
-      {props.anecdotes[selected]}
+      <p>{props.anecdotes[selected]}</p>
+      <button onClick={click()}>Another</button>
     </div>
   )
 }
@@ -20,9 +26,12 @@ const anecdotes = [
   'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
 ]
 
+
+
 ReactDOM.render(
   <App anecdotes={anecdotes} />,
   document.getElementById('root')
+)
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
