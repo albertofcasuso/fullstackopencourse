@@ -3,13 +3,17 @@ import Header from './Header'
 import Content from './Content'
 
 const Course =(props) =>{
-  const {course} = props
-  return(
-    <div>
-      <Header course={course}/>
-      <Content course={course}/>
-    </div>
-  )
+  const {courses} = props
+
+  const all = courses.map((value) =>{
+    return(<div>
+      <Header course= {value} key={value.id}/>
+      <Content course= {value} key={value.id}/>
+      </div>
+  )})
+
+
+  return all
 }
 
 export default Course
