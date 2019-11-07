@@ -1,0 +1,24 @@
+const Part = (props) => {
+    const all = props.parts.map(value => <p>{value.name} {value.exercises}</p>)
+    return (
+        all
+    )
+}
+
+const Content = (props) => {
+    return(
+        <div>
+          <Part parts={props.course.parts}/>
+        </div>
+    )
+}
+
+const Total = (props) => {
+    let a= 0
+    props.course.parts.forEach(value => {
+        a+=value.exercises
+    })
+    return (
+        <p>Number of exercises {a}</p>
+    )
+}
