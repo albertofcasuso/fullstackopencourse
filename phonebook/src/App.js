@@ -13,8 +13,8 @@ const App = () => {
   const nameList = persons.map(persona => <Person key={persona.id} person={persona}/>)
 
   const handleChange = (event) => {
-    console.log(event.target.value)
     setNewName(event.target.value)
+
   }
 
   const addPerson = (event) => {
@@ -23,7 +23,7 @@ const App = () => {
       name: newName,
       id: persons.length +1,
     }
-    setPersons(persons.concat(personObject))
+    persons.some(persona => persona.name === newName) ? alert(`${newName} is already added to phonebook`):setPersons(persons.concat(personObject))
   }
 
   return (
