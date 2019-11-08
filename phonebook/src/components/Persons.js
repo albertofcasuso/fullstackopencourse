@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Person = (props) => {
+const Persons = (props) => {
 
   const {persons} = props
   const personList = persons.map(persona => <li key={persona.id}>{persona.name}: {persona.number}</li>)
@@ -13,4 +13,4 @@ const Person = (props) => {
   )
 }
 
-export default Person
+export default Persons

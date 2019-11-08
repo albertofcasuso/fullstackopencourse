@@ -1,16 +1,19 @@
 import React, { useState } from 'react'
-import Person from './components/Person'
+import Persons from './components/Persons'
 
 const App = () => {
 
   const [ persons, setPersons] = useState([
-    { name: 'Arto Hellas',
-      id:1,
-      number: '1234567890'
-    }
+    { name: 'Arto Hellas', id:1,number: '1234567890'},
+    { name: 'Ada Lovelace',id:2, number: '39-44-5323523' },
+    { name: 'Dan Abramov',id:3, number: '12-43-234345' },
+    { name: 'Mary Poppendieck',id:4, number: '39-23-6423122' }
   ])
   const [ newName, setNewName ] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [searchName, setSearch] = useState('')
+
+
 
   const handleName = (event) => {
     setNewName(event.target.value)
@@ -33,9 +36,21 @@ const App = () => {
     existe ? alert(`${newName} is already added to phonebook`):setPersons(persons.concat(personObject)) : alert('no hay numero')
   }
 
+  const handleSearch = (event) =>{
+    setSearch(event.target.value)
+  }
+  const namesToShow = searchName ? persons.filter(person => person.name.toLowerCase().includes(searchName)) : persons
+  
   return (
     <div>
       <h2>Phonebook</h2>
+
+
+      <p>Search by name: </p>
+      <input value={searchName} onChange={handleSearch}/>
+
+
+     <h2>Add new person:</h2>
       <form onSubmit={addPerson}>
         <div>
           name: <input value={newName} onChange={handleName}/>
@@ -48,7 +63,7 @@ const App = () => {
         </div>
       </form>
 
-      <Person persons={persons}/>
+      <Persons persons={namesToShow}/>
 
     </div>
   )
