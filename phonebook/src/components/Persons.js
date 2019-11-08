@@ -3,11 +3,16 @@ import React from 'react'
 const Persons = (props) => {
 
   const {persons} = props
-  const personList = persons.map(persona => <li key={persona.id}>{persona.name}: {persona.number}</li>)
+  const {search} = props
+
+  const namesToShow = search ? persons.filter(person => person.name.toLowerCase().includes(search)) : persons
+
+  const personList = namesToShow.map(persona => <li key={persona.id}>{persona.name}: {persona.number}</li>)
+
+
 
   return(
     <div>
-    <h2>Numbers</h2>
     <ul>{personList}</ul>
     </div>
   )

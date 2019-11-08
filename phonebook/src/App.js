@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import Persons from './components/Persons'
+import Search from './components/Search'
+import Input from './components/Input'
 
 const App = () => {
 
@@ -39,32 +41,18 @@ const App = () => {
   const handleSearch = (event) =>{
     setSearch(event.target.value)
   }
-  const namesToShow = searchName ? persons.filter(person => person.name.toLowerCase().includes(searchName)) : persons
-  
+  /*const namesToShow = searchName ? persons.filter(person => person.name.toLowerCase().includes(searchName)) : persons*/
+
   return (
     <div>
-      <h2>Phonebook</h2>
-
-
-      <p>Search by name: </p>
-      <input value={searchName} onChange={handleSearch}/>
-
+     <h2>Phonebook</h2>
+     <Search value={searchName} onChange={handleSearch}/>
 
      <h2>Add new person:</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input value={newName} onChange={handleName}/>
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumber}/>
-       </div>
-        <div>
-          <button type="submit">Add</button>
-        </div>
-      </form>
+     <Input onSubmit={addPerson} nameValue={newName} numberValue={newNumber} numberChange={handleNumber} nameChange={handleName}/>
 
-      <Persons persons={namesToShow}/>
-
+     <h2>Numbers</h2>
+     <Persons persons={persons} search={searchName}/>
     </div>
   )
 }
