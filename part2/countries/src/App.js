@@ -17,11 +17,14 @@ const App= () => {
     setSearch(event.target.value)
   }
 
+  const click = (country) => () => {
+    setSearch(country.name)
+  }
 
-  const countrySearch = searchCountry ? countries.filter(country => country.name.toLowerCase().includes(searchCountry)) : 0
+  const countrySearch = searchCountry ? countries.filter(country => country.name.toLowerCase().includes(searchCountry.toLowerCase())) : 0
 
   const conditional = (busca) => { if (busca.length > 1 && busca.length < 10){
-    return busca.map(country => <li>{country.name}</li>)
+    return busca.map(country => <li>{country.name} <button onClick={click(country)}>Show</button></li>)
   } else if (busca.length === 1){
     return busca.map(country =>
       <div>
