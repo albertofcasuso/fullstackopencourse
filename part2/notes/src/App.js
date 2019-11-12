@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import axios from 'axios'
+import noteService from './services/notes'
 import Note from './components/Note'
 
 
@@ -12,23 +12,30 @@ const App = (props) => {
 
   /*Use effect se ejecuta despues del render*/
   const fetchData = () =>{
-    console.log('effect')
-    axios
-    .get('http://localhost:3001/notes')
-    .then(response => {
-      console.log('promise fulfilled')
-      setNote(response.data)
+    noteService.getAll()
+    .then(initialNotes => {
+      setNote(initialNotes)
     })
   }
   useEffect(fetchData,[])
-  /*Este clog se ejecuta al leer el programa*/
-  console.log('render', note.length, 'note')
 
   const notesToShow = showAll ? note : note.filter(note => note.important)
 
+ const toggleImportanceOf = id => {
+  const nota = note.find(n => n.id === id)
+  const changedNote = { ...nota, important: !nota.important }
+
+  noteService.update(id,changedNote).then(response => {
+    setNote(note.map(n => n.id !== id ? n : response.data))
+  })
+}
+
   const noteList = notesToShow.map(
     nota =>
-      <Note key={nota.id} note={nota}/>
+      <Note key={nota.id}
+            note={nota}
+            toggleImportance={() => toggleImportanceOf(nota.id)}
+            />
     )
 
   const handleChange = (event) => {
@@ -42,13 +49,17 @@ const App = (props) => {
     const noteObject = {
     content: newNote,
     date: new Date().toISOString(),
-    important: Math.random() > 0.5,
-    id: note.length + 1,
+    important: Math.random() > 0.5
   }
-  setNote(note.concat(noteObject))
 
-  setNewNote('')
-    console.log('button clicked', event.target)
+
+
+  noteService.create(noteObject)
+  .then(returnedNote => {
+    setNote(note.concat(returnedNote))
+    setNewNote('')
+  }
+  )
   }
 
   return (
@@ -64,7 +75,6 @@ const App = (props) => {
           <input value={newNote} onChange={handleChange} />
           <button type="submit">save</button>
         </form>
-        {console.log('soy el html')}
     </div>
   )
 }
