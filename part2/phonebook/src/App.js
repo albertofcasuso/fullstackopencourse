@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import dataService from './services/dataService'
 import Persons from './components/Persons'
 import Search from './components/Search'
@@ -51,13 +50,13 @@ const App = () => {
   }
 
   const handleDelete = (id) => {
-    const newPersons = persons.filter(persona => {if(persona.id !== id){return persona}})
+    const newPersons = persons.filter(persona => persona.id !== id?persona:null)
     const persona = persons.find(persona => persona.id === id)
+
     if(window.confirm(`Seriously delete ${persona.name}?`)){
-    axios
-    .delete(`http://localhost:3001/persons/${id}`)
-    .then(setPersons(newPersons))
-  }
+    dataService.deleteData(id).then(setPersons(newPersons))
+    }
+    else return null
   }
 
   return (

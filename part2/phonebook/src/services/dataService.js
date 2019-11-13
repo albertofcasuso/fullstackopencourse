@@ -10,12 +10,14 @@ const postData = (newObject) => {
   return axios.post(baseURL,newObject)
 }
 
-const updateData = () => {
-
+const deleteData = (id) => {
+  return axios
+  .delete(`http://localhost:3001/persons/${id}`)
+    .then(response=>response.data)
 }
 
 export default {
   fetchData,
   postData,
-  updateData
+  deleteData
 }
