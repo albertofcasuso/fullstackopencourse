@@ -16,8 +16,13 @@ const deleteData = (id) => {
     .then(response=>response.data)
 }
 
+const updateData = (id,newObject) => {
+  return axios.put(`${baseURL}/${id}`, newObject)
+}
+
 export default {
   fetchData,
   postData,
-  deleteData
+  deleteData,
+  updateData
 }

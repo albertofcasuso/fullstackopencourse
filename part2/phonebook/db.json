@@ -1,11 +1,6 @@
 {
   "persons": [
     {
-      "name": "alberto",
-      "number": "5542438754",
-      "id": 3
-    },
-    {
       "name": "mariana",
       "number": "23329823",
       "id": 5
@@ -22,13 +17,8 @@
     },
     {
       "name": "casuso",
-      "number": "23923982938",
+      "number": "666",
       "id": 8
-    },
-    {
-      "name": "algo",
-      "number": "algo",
-      "id": 9
     }
   ]
 }
