@@ -34,15 +34,17 @@ const App = () => {
       name: newName,
       number: newNumber,
     }
-    const existe = persons.some(persona => persona.name === newName)
-    personObject.number ?
-    existe ?
-    //si SI existe:
-      alert(`${newName} is already added to phonebook`)
+    const existeNombre = persons.some(persona => persona.name === newName)
+
+    if(existeNombre){
+        const per = persons.find(persona => persona.name === newName)
+        dataService.updateData(per.id,personObject).then(response=>{
+          setPersons(persons.map(persona=>persona.name===newName?response.data:persona))
+        })
+      }else{
+        dataService.postData(personObject).then(response => setPersons(persons.concat(response.data)))
+      }
     //si NO existe lo añade y muestra en pantalla
-      :dataService.postData(personObject).then(response => setPersons(persons.concat(response.data)))
-    //si NO hay numero
-      : alert('no hay numero')
   }
 
   const handleSearch = (event) =>{
