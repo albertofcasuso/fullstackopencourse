@@ -3,6 +3,8 @@ import dataService from './services/dataService'
 import Persons from './components/Persons'
 import Search from './components/Search'
 import Input from './components/Input'
+import Notification from './components/Notification'
+import './index.css'
 
 const App = () => {
 
@@ -11,6 +13,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchName, setSearch] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const fetchData = () => {
     dataService.fetchData()
@@ -38,14 +41,30 @@ const App = () => {
 
     if(existeNombre){
       const per = persons.find(persona => persona.name === newName)
+
+      const changedPersona = {...per,number:newNumber}
+
       const confirm = window.confirm(`${per.name} already exists, change number?`)
       if(confirm){
-        dataService.updateData(per.id,personObject).then(response=>
+        dataService
+        .updateData(per.id,changedPersona)
+        .then(response=>{
           setPersons(persons.map(persona=>persona.name===newName?response.data:persona))
-        )
+          setErrorMessage(`Has cambiado el numero de: ${per.name}`)
+          setTimeout(() => {setErrorMessage(null)}, 3000)
+        })
+        .catch(error => {
+          setErrorMessage(`No se puede cambiar el numero de ${per.name}`)
+          console.log(error)
+          setTimeout(() => {setErrorMessage(null)}, 3000)
+        })
       }
       }else{
-        dataService.postData(personObject).then(response => setPersons(persons.concat(response.data)))
+        dataService.postData(personObject).then(response => {
+          setPersons(persons.concat(response.data))
+          setErrorMessage(`Has añadido a: ${newName}`)
+          setTimeout(() => {setErrorMessage(null)}, 3000)
+        })
       }
     //si NO existe lo añade y muestra en pantalla
   }
@@ -70,6 +89,7 @@ const App = () => {
      <Search value={searchName} onChange={handleSearch}/>
 
      <h2>Add new person:</h2>
+     <Notification message={errorMessage}/>
      <Input onSubmit={addPerson} nameValue={newName} numberValue={newNumber} numberChange={handleNumber} nameChange={handleName}/>
 
      <h2>Numbers</h2>

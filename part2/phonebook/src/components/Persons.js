@@ -9,7 +9,7 @@ const Persons = (props) => {
   const namesToShow = search ? persons.filter(person => person.name.toLowerCase().includes(search)) : persons
 
   const personList = namesToShow.map(persona =>
-    <li key={persona.id}>
+    <li key={persona.id} className='persona'>
       {persona.name}: {persona.number}
       <button onClick={()=>click(persona.id)}>Delete</button>
     </li>)
