@@ -8,27 +8,27 @@ let persons = [
   {
     "name": "marian",
     "number": "23329823",
-    "id": 6
+    "id": 1
   },
   {
     "name": "mazdey",
     "number": "2913892819",
-    "id": 7
+    "id": 2
   },
   {
     "name": "casuso",
     "number": "666",
-    "id": 8
+    "id": 3
   },
   {
     "name": "alberto",
     "number": "5542438754",
-    "id": 9
+    "id": 4
   },
   {
-    "name": "satanas",
+    "name": "satan",
     "number": "666",
-    "id": 10
+    "id": 5
   }
 ]
 
@@ -39,10 +39,17 @@ app.get('/api/persons', (req, res) => {
 app.get('/info',(req, res)=>{
   const length = persons.length
   const fecha = new Date()
-  console.log(length)
   res.send(`
     <p>The page has info for ${length} people</p>
     <p>${fecha}</p>`)
+})
+
+app.get('/api/persons/:id',(request, response)=>{
+  const id = Number(request.params.id)
+  const person = persons.find(person=>person.id === id)
+  person?
+  response.json(person)
+  :response.status(404).end()
 })
 
 const PORT = 3001
