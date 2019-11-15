@@ -1,8 +1,17 @@
 const express = require('express')
-const app = express()
 const bodyParser = require('body-parser')
+const morgan = require('morgan')
+
+const app = express()
 
 app.use(bodyParser.json())
+
+morgan.token('body', function getBody (req) {
+  return JSON.stringify(req.body)
+})
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms, :body'))
+
+
 
 let persons = [
   {
@@ -62,6 +71,7 @@ app.delete('/api/persons/:id', (request, response) => {
 
 
 app.post('/api/persons', (request, response) => {
+
   const randomId =(max) =>{
     return Math.floor(Math.random()*Math.floor(max))
   }
