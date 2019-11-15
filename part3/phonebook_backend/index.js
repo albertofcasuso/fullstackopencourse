@@ -65,13 +65,30 @@ app.post('/api/persons', (request, response) => {
   const randomId =(max) =>{
     return Math.floor(Math.random()*Math.floor(max))
   }
+  const existeNombre = persons.some(person=>person.name === request.body.name)
+  const hasName = request.body.name.length
+  const hasNumber = request.body.number.length
 
   const person = request.body
   person.id = randomId(5000)
 
-  persons = persons.concat(person)
-
-  response.json(person)
+  if(existeNombre){
+  response.status(400).json({
+    error: 'name already exists'
+  })}else if(hasName>0 && hasNumber>0){
+    persons = persons.concat(person)
+    response.json(person)
+  }else{
+    hasName===0?
+    response.status(400).json({
+      error: 'name is missing'
+    })
+    :hasNumber===0?
+    response.status(400).json({
+      error: 'number is missing'
+    })
+    :null
+  }
 })
 
 const PORT = 3001
