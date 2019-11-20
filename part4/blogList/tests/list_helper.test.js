@@ -67,4 +67,14 @@ describe('Like operations',()=>{
   test('number of likes added up', ()=>{
     expect(helper.totalLikes(post)).toBe(50036)
   })
+
+  test('most likes',()=>{
+    expect(helper.favouriteBlog(post)).toEqual(
+      {
+        'title':'Socialist economics 11',
+        'author':'Donald Trump',
+        'url': 'http://trumpthatbitch.com',
+        'likes':50000
+      })
+  })
 })

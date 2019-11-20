@@ -1,5 +1,6 @@
-const dummy = (blogs) => {
-  if(blogs){
+//1 SI EXISTE POSTS
+const dummy = (posts) => {
+  if(posts){
     return 1
   }
 }
@@ -10,8 +11,15 @@ const totalLikes = (posts) => {
   const likeArray = posts.map(post=>post.likes)
   return likeArray.reduce(reducer)
 }
-  
+
+//FAVOURITE BLOG
+const favouriteBlog = (posts) =>{
+  const reducer = (accumulator,currentValue) => currentValue.likes>accumulator.likes?currentValue:accumulator
+  return posts.reduce(reducer)
+}
+
 module.exports = {
   dummy,
-  totalLikes
+  totalLikes,
+  favouriteBlog
 }
