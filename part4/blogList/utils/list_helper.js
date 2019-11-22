@@ -18,8 +18,16 @@ const favouriteBlog = (posts) =>{
   return posts.reduce(reducer)
 }
 
+//MOST BLOGS 
+//VOLVER DESPUES
+/*
+const mostBlogs = (posts) => {
+}
+*/
+
 module.exports = {
   dummy,
   totalLikes,
   favouriteBlog
+  //mostBlogs
 }

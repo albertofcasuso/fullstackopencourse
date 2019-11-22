@@ -8,9 +8,9 @@ const config = require('./utils/config')
 
 
 mongoose.connect(config.MONGODB_URI).then(response=>{
-    console.log('Connected to MONGODB')
+  console.log('Connected to MONGODB')
 }).catch(error=>{
-    console.log('Error connecting to MONGODB')
+  console.log('Error connecting to MONGODB')
 })
 app.use(cors())
 app.use(bodyParser.json())

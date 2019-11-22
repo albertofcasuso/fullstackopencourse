@@ -10,12 +10,6 @@ describe('Like operations',()=>{
 
   const post = [
     {
-      'title':'Socialist economics 11',
-      'author':'Donald Trump',
-      'url': 'http://trumpthatbitch.com',
-      'likes':50000
-    },
-    {
       _id: '5a422a851b54a676234d17f7',
       title: 'React patterns',
       author: 'Michael Chan',
@@ -62,19 +56,29 @@ describe('Like operations',()=>{
       url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
       likes: 2,
       __v: 0
-    }]
+    }
+  ]
 
   test('number of likes added up', ()=>{
-    expect(helper.totalLikes(post)).toBe(50036)
+    expect(helper.totalLikes(post)).toBe(36)
   })
 
   test('most likes',()=>{
     expect(helper.favouriteBlog(post)).toEqual(
       {
-        'title':'Socialist economics 11',
-        'author':'Donald Trump',
-        'url': 'http://trumpthatbitch.com',
-        'likes':50000
+        _id: '5a422b3a1b54a676234d17f9',
+        title: 'Canonical string reduction',
+        author: 'Edsger W. Dijkstra',
+        url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+        likes: 12,
+        __v: 0
       })
   })
+
+  /*
+  test('Author with most blogs',()=>{
+    expect(helper.mostBlogs(post)).toEqual({})
+  })
+  */
+
 })
