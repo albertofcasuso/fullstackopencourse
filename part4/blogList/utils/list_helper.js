@@ -1,4 +1,4 @@
-//1 SI EXISTE POSTS
+//Devuelve 1 SI EXISTE POSTS
 const dummy = (posts) => {
   if(posts){
     return 1
