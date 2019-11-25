@@ -76,7 +76,7 @@ beforeEach(async()=>{
   await noteObject.save()
 })
 
-describe('API tests',()=>{
+describe('API GET tests',()=>{
 
   test('Blogs can be retrieved - GET', async ()=>{
     await api
@@ -97,6 +97,27 @@ describe('API tests',()=>{
     expect(blogs.map(blog=>blog.id)).toBeDefined()
   })
 
+})
+
+describe('API POST tests',()=>{
+
+  test('Blog can be POSTed', async ()=>{
+    const newPost = new Blog({
+      title: 'Socialist economics',
+      author: 'Donald Trump',
+      url: 'https://donaldtrumpthecommunist.com',
+      likes: 7,
+    })
+    const previousResponse = await api.get('/api/blogs')
+
+    await api
+      .post('/api/blogs',newPost)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const response = await api.get('/api/blogs')
+    expect(response.body.length).toBe(previousResponse.body.length+1)
+  })
 })
 
 afterAll(async () => {
