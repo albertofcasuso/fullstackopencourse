@@ -51,6 +51,7 @@ const post = [
     __v: 0
   }
 ]
+
 describe('Dummy data',()=>{
   test('dummy function returns 1?', () => {
     expect(helper.dummy(post)).toBe(1)
