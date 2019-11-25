@@ -132,7 +132,6 @@ describe('API POST tests',()=>{
       .expect('Content-Type', /application\/json/)
     const response = await api.get('/api/blogs')
     const lastPost = response.body.map(blog=>blog)
-    console.log(lastPost[lastPost.length-1])
     expect(lastPost[lastPost.length-1].likes).toBe(0)
   })
 })
