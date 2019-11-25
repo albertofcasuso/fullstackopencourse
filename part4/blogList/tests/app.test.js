@@ -83,10 +83,18 @@ describe('API tests',()=>{
       .get('/api/blogs')
       .expect(200)
       .expect('Content-Type', /application\/json/)
+  })
 
+  test('length is 6',async()=>{
     const response = await api.get('/api/blogs')
-    const contents = response.body.map(r=>r.content)
-    expect (response.body.length).toBe(6)
+    expect(response.body.length).toBe(6)
+  })
+
+
+  test('id property is defined', async()=>{
+    const response = await api.get('/api/blogs')
+    const blogs = response.body.map(r=>r)
+    expect(blogs.map(blog=>blog.id)).toBeDefined()
   })
 
 })

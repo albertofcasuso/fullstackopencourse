@@ -4,7 +4,7 @@ const Blog = require('../models/blog')
 routeControl.get('/',async (request, response) => {
   console.log('GET')
   const blogs = await Blog.find({})
-  response.json(blogs)
+  response.json(blogs.map(blog=>blog.toJSON()))
   
 })
 
