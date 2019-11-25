@@ -118,6 +118,23 @@ describe('API POST tests',()=>{
     const response = await api.get('/api/blogs')
     expect(response.body.length).toBe(previousResponse.body.length+1)
   })
+
+  test('likes default is 0',async()=>{
+    const newPost = new Blog({
+      title: 'Socialist economics',
+      author: 'Donald Trump',
+      url: 'https://donaldtrumpthecommunist.com'
+    })
+
+    await api
+      .post('/api/blogs',newPost)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+    const response = await api.get('/api/blogs')
+    const lastPost = response.body.map(blog=>blog)
+    console.log(lastPost[lastPost.length-1])
+    expect(lastPost[lastPost.length-1].likes).toBe(0)
+  })
 })
 
 afterAll(async () => {
