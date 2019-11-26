@@ -22,4 +22,15 @@ routeControl.post('/', async (request, response,next) => {
   }
 })
 
+
+routeControl.delete('/:id',async(request,response,next)=>{
+  try{
+    const deleted = await Blog.findByIdAndRemove(request.params.id)
+    response.status(204).end()
+  }catch(error){
+    console.log('deleting error')
+  }
+  
+})
+
 module.exports = routeControl

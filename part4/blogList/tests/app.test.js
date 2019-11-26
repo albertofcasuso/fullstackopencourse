@@ -136,10 +136,19 @@ describe('API POST tests',()=>{
       .expect(400)
       .expect('Content-Type', /application\/json/)
   })
+})
 
+describe('API DELETE tests',()=>{
+  test('A Blog can be deleted', async()=>{
+    const blogs = await api.get('/api/blogs')
+
+    await api
+      .delete('/api/blogs/'+blogs.body[0].id)
+      .expect(204)
+  })
 })
 
 afterAll(async () => {
-  //await Blog.deleteMany({})
+  await Blog.deleteMany({})
   mongoose.connection.close()
 })
