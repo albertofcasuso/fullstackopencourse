@@ -148,6 +148,25 @@ describe('API DELETE tests',()=>{
   })
 })
 
+describe('API PUT tests',()=>{
+  test('A Blog can be updated', async()=>{
+    const blogs = await api.get('/api/blogs')
+    const blogToUpdate = blogs.body[0]
+    const updatedBlog = {
+      title:blogToUpdate.title,
+      author:blogToUpdate.author,
+      url:blogToUpdate.url,
+      likes:blogToUpdate.likes+5
+    }
+
+    const returnedBlog = await api.put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updatedBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+    expect(returnedBlog.body.likes).toBe(blogToUpdate.likes+5)
+  })
+})
+
 afterAll(async () => {
   await Blog.deleteMany({})
   mongoose.connection.close()
