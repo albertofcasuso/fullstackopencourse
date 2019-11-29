@@ -14,7 +14,5 @@ blogSchema.set('toJSON',{
     delete returnedObject.__v
   }
 })
-  
-mongoose.model('Blog', blogSchema)
 
 module.exports = mongoose.model('Blog', blogSchema)
