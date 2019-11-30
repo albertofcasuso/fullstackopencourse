@@ -167,6 +167,14 @@ describe('API PUT tests',()=>{
   })
 })
 
+describe('users API tests',()=>{
+  test('Users can be retrieved', async()=>{
+    await api.get('/api/users')
+      .expect(200)
+      .expect('Content Type',/application\/json/)
+  })
+})
+
 afterAll(async () => {
   await Blog.deleteMany({})
   mongoose.connection.close()

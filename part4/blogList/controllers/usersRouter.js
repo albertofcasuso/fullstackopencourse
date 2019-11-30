@@ -14,7 +14,7 @@ routeControl.post('/', async (request, response,next) => {
     })
 
     const result =  await user.save()
-    response.status(201).json(result.toJSON())
+    response.status(200).json(result.toJSON())
   }catch(error){
     next(error)
   }
