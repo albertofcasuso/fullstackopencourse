@@ -1,3 +1,12 @@
+const requestLogger = (request, response, next) => {
+  console.log('Method:', request.method)
+  console.log('Path:  ', request.path)
+  console.log('Body:  ', request.body)
+  console.log('---')
+  next()
+}
+
+
 const errorHandler = (error,request,response,next)=>{
   //Error 400 si falla la validación
   if (error.name === 'ValidationError'){
@@ -10,14 +19,11 @@ const errorHandler = (error,request,response,next)=>{
 }
 
 const getTokenFrom = (request,response,next) => {
-  //console.log('I am the getTokenFrom middleware')
-  //console.log(request.get('authorization'))
   const authorization = request.get('authorization')
   if(authorization && authorization.toLowerCase().startsWith('bearer')){
     request.token = authorization.substring(7)
     next()
   }
-  return null
 }
 
-module.exports = {errorHandler,getTokenFrom}
+module.exports = {errorHandler,getTokenFrom,requestLogger}

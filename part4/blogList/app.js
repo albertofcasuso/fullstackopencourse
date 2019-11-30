@@ -18,6 +18,7 @@ mongoose.connect(config.MONGODB_URI,{useNewUrlParser:true}).then(response=>{
 app.use(cors())
 app.use(bodyParser.json())
 
+app.use(middleware.requestLogger)
 app.use(middleware.getTokenFrom)
 
 //Cargar el enrutador POST GET de los blogs
