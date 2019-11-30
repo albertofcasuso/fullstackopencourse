@@ -34,6 +34,7 @@ describe('users API tests',()=>{
       .expect(200)
       .expect('Content-Type',/application\/json/)
   })
+
   test('Invalid usernames can not be created',async()=>{
     const invalidUser = {
       username:'m',
@@ -44,6 +45,7 @@ describe('users API tests',()=>{
       .send(invalidUser)
       .expect(400)
   })
+  
   test('Invalid passwords can not be created',async()=>{
     const invalidPassword = {
       username:'mazdey',
