@@ -16,16 +16,6 @@ routeControl.get('/',async (request, response,next) => {
 
 routeControl.post('/', async (request, response,next) => {
   const body = request.body
-  const user = await User.findById(body.userID)
-
-  const blog = new Blog({
-    title:body.title,
-    author:body.author,
-    likes:body.likes,
-    url:body.url,
-    user:user._id,
-  })
-  
 
   try{
     const decodedToken = jwt.verify(request.token,process.env.SECRET)
@@ -33,6 +23,14 @@ routeControl.post('/', async (request, response,next) => {
     if(!request.token || !decodedToken.id){
       return response.status(401).json({error:'token missing or invalid'})
     }
+    const user = await User.findById(decodedToken.id)
+    const blog = new Blog({
+      title:body.title,
+      author:body.author,
+      likes:body.likes,
+      url:body.url,
+      user:user._id,
+    })
     const savedBlog =  await blog.save()
     user.blogs=user.blogs.concat(savedBlog._id)
     await user.save()
@@ -44,11 +42,19 @@ routeControl.post('/', async (request, response,next) => {
 
 
 routeControl.delete('/:id',async(request,response,next)=>{
+  
   try{
+    const blogToDelete = await Blog.findById(request.params.id)
+    const decodedToken = jwt.verify(request.token,process.env.SECRET)
+    const loggedUser = await User.findById(decodedToken.id)
+
+    if(!request.token || !decodedToken.id || loggedUser.id!=blogToDelete.user){
+      return response.status(401).json({error:'token missing,invalid or wrong user logged in'})
+    }
     const deleted = await Blog.findByIdAndRemove(request.params.id)
     response.status(204).end()
   }catch(error){
-    console.log('deleting error')
+    next(error)
   }
 })
 
