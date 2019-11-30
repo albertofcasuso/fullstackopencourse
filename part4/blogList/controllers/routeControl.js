@@ -1,10 +1,11 @@
 const routeControl = require('express').Router()
 const Blog = require('../models/blog')
+const User = require('../models/userModel')
 
 routeControl.get('/',async (request, response,next) => {
 
   try{
-    const blogs = await Blog.find({})
+    const blogs = await Blog.find({}).populate('user',{username:1,email:1})
     response.json(blogs.map(blog=>blog.toJSON()))
   }catch(error){
     next(error)
@@ -12,11 +13,22 @@ routeControl.get('/',async (request, response,next) => {
 })
 
 routeControl.post('/', async (request, response,next) => {
-  const blog = new Blog(request.body)
+  const body = request.body
+  const user = await User.findById(body.userID)
+  const blog = new Blog({
+    title:body.title,
+    author:body.author,
+    likes:body.likes,
+    url:body.url,
+    user:user._id,
+  })
+  
 
   try{
-    const result =  await blog.save()
-    response.status(201).json(result.toJSON())
+    const savedBlog =  await blog.save()
+    user.blogs=user.blogs.concat(savedBlog._id)
+    await user.save()
+    response.json(savedBlog.toJSON())
   }catch(error){
     next(error)
   }

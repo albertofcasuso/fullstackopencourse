@@ -29,7 +29,8 @@ routeControl.post('/', async (request, response,next) => {
 
 routeControl.get('/', async (request, response,next) => {
   try{
-    const users = await User.find({})
+    const users = await User.find({}).populate('blogs',{likes:1,title:1,author:1,url:1})
+
     response.status(200).json(users.map(user=>user.toJSON()))
   }catch(error){
     next(error)

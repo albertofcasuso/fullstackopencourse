@@ -4,6 +4,10 @@ const blogSchema = mongoose.Schema({
   title: {type:String,minlength:5,required:true},
   author: {type:String,minlength:5,required:true},
   url: {type:String, required:true},
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
   likes: {type:Number,default:0},
 })
 
