@@ -22,9 +22,6 @@ routeControl.post('/', async (request, response,next) => {
   else{
     response.status(400).json({error:'password invalid. Must contain more than three characters.'})
   }
-
-
-  
 })
 
 routeControl.get('/', async (request, response,next) => {
