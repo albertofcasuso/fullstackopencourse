@@ -6,6 +6,15 @@ const requestLogger = (request, response, next) => {
   next()
 }
 
+const getTokenFrom = (request,response,next) => {
+  const authorization = request.get('authorization')
+  if(authorization && authorization.toLowerCase().startsWith('bearer')){
+    request.token = authorization.substring(7)
+    next()
+  }else{
+    next()
+  }
+}
 
 const errorHandler = (error,request,response,next)=>{
   //Error 400 si falla la validación
@@ -16,14 +25,6 @@ const errorHandler = (error,request,response,next)=>{
     return response.status(401).json({error:'invalid token'})
   }
   next(error)
-}
-
-const getTokenFrom = (request,response,next) => {
-  const authorization = request.get('authorization')
-  if(authorization && authorization.toLowerCase().startsWith('bearer')){
-    request.token = authorization.substring(7)
-    next()
-  }
 }
 
 module.exports = {errorHandler,getTokenFrom,requestLogger}
