@@ -11,13 +11,13 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user,setUser] = useState(null)
 
-  /*==============FIRST FETCH DATA=====================================================*/
+/*==============FIRST FETCH DATA=====================================================*/
   const fetchData = () =>{
     blogService.getAll().then(blog=> setBlogs(blog))
   }
   useEffect(fetchData,[])
 
-  /*==============CHECK LOGIN=====================================================*/
+/*==============CHECK LOGIN=====================================================*/
   const checkLogin=()=>{
     const loggedUser = window.localStorage.getItem('loggedUser')
     if(loggedUser){
@@ -28,7 +28,6 @@ const App = () => {
   useEffect(checkLogin,[])
 
 /*==============LOGIN FORM=====================================================*/
-
   const handleLogin = async (event)=>{
     event.preventDefault()
     try{
