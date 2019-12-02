@@ -52,7 +52,7 @@ const App = () => {
   return (
     <div>
     {user!==null?
-    <Blog blogs={blogs}/>
+    <Blog blogs={blogs} user={user}/>
     :logInForm()
     }
     </div>
