@@ -10,22 +10,22 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user,setUser] = useState(null)
+  
+/*==============CHECK LOGIN=====================================================*/
+const checkLogin=()=>{
+  const loggedUser = window.localStorage.getItem('loggedUser')
+  if(loggedUser){
+    const user = JSON.parse(loggedUser)
+    setUser(user)
+  }
+}
+useEffect(checkLogin,[])
 
 /*==============FIRST FETCH DATA=====================================================*/
   const fetchData = () =>{
     blogService.getAll().then(blog=> setBlogs(blog))
   }
   useEffect(fetchData,[])
-
-/*==============CHECK LOGIN=====================================================*/
-  const checkLogin=()=>{
-    const loggedUser = window.localStorage.getItem('loggedUser')
-    if(loggedUser){
-      const user = JSON.parse(loggedUser)
-      setUser(user)
-    }
-  }
-  useEffect(checkLogin,[])
 
 /*==============LOGIN FORM=====================================================*/
   const handleLogin = async (event)=>{
