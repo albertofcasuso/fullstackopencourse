@@ -11,10 +11,21 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user,setUser] = useState(null)
 
+  /*==============FIRST FETCH DATA=====================================================*/
   const fetchData = () =>{
     blogService.getAll().then(blog=> setBlogs(blog))
   }
   useEffect(fetchData,[])
+
+  /*==============CHECK LOGIN=====================================================*/
+  const checkLogin=()=>{
+    const loggedUser = window.localStorage.getItem('loggedUser')
+    if(loggedUser){
+      const user = JSON.parse(loggedUser)
+      setUser(user)
+    }
+  }
+  useEffect(checkLogin,[])
 
 /*==============LOGIN FORM=====================================================*/
 
@@ -22,6 +33,7 @@ const App = () => {
     event.preventDefault()
     try{
       const user = await loginService.login({username,password})
+      window.localStorage.setItem('loggedUser',JSON.stringify(user))
       setUser(user)
       setUsername('')
       setPassword('')
@@ -48,11 +60,28 @@ const App = () => {
       </div>
     )
   }
+/*==============LOGOUT HANDLER=====================================================*/
+const logout = () =>{
+  window.localStorage.removeItem('loggedUser')
+  window.location.reload()
+}
+
+/*==============BLOG LIST=====================================================*/
+  const blogList = () =>{
+    return (
+      <div>
+      <h1>Blog List</h1>
+      <p>{user.username} is logged in</p>
+      <button onClick={logout}>Logout</button>
+        <Blog blogs={blogs}/>
+      </div>
+    )
+  }
 
   return (
     <div>
     {user!==null?
-    <Blog blogs={blogs} user={user}/>
+    blogList()
     :logInForm()
     }
     </div>
