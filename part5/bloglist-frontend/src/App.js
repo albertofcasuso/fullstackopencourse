@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import blogService from './services/blogs'
+import loginService from './services/login'
 import Blog from './components/Blog'
 //import logo from './logo.svg';
 //import './App.css';
@@ -8,20 +9,31 @@ const App = () => {
   const [blogs,setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const isLoggedIn = false
+  const [user,setUser] = useState(null)
 
   const fetchData = () =>{
     blogService.getAll().then(blog=> setBlogs(blog))
   }
   useEffect(fetchData,[])
 
-  const handleLogin = (event)=>{
+/*==============LOGIN FORM=====================================================*/
+
+  const handleLogin = async (event)=>{
     event.preventDefault()
-    console.log('Logging in as',username,password)
+    try{
+      const user = await loginService.login({username,password})
+      setUser(user)
+      setUsername('')
+      setPassword('')
+    }catch(error){
+      console.log('error', error.message)
+    }
   }
 
   const logInForm = () =>{
     return (
+      <div>
+        <h1>Login</h1>
       <form onSubmit={handleLogin}>
         <div>
         username
@@ -33,12 +45,13 @@ const App = () => {
         </div>
         <button type="submit">login</button>
       </form>
+      </div>
     )
   }
 
   return (
     <div>
-    {isLoggedIn?
+    {user!==null?
     <Blog blogs={blogs}/>
     :logInForm()
     }
