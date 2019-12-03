@@ -5,9 +5,10 @@ import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import LogoutForm from './components/LogoutForm'
 import InputForm from './components/InputForm'
+import Notification from './components/Notification'
 
 //import logo from './logo.svg';
-//import './App.css';
+import './App.css';
 
 const App = () => {
 /*==============STATE CONSTANTS=====================================================*/
@@ -21,12 +22,16 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
+  const [errorMessage, setErrorMessage] = useState(null)
+
 /*==============CHECK LOGIN=====================================================*/
 const checkLogin=()=>{
   const loggedUser = window.localStorage.getItem('loggedUser')
   if(loggedUser){
     const user = JSON.parse(loggedUser)
     setUser(user)
+    setErrorMessage(`Welcome back ${user.username}`)
+    setTimeout(() => {setErrorMessage(null)}, 3000)
   }
 }
 useEffect(checkLogin,[])
@@ -47,8 +52,11 @@ useEffect(checkLogin,[])
       setUser(user)
       setUsername('')
       setPassword('')
+      setErrorMessage(`Welcome ${user.username}`)
+      setTimeout(() => {setErrorMessage(null)}, 3000)
     }catch(error){
-      console.log('error', error.message)
+      setErrorMessage(`Incorrect login`)
+      setTimeout(() => {setErrorMessage(null)}, 3000)
     }
   }
   const handleUsername = (event) => {
@@ -68,6 +76,8 @@ const handleInput = async (event) =>{
   try{
     const response = await blogService.postBlog(newBlog,user.token)
     setBlogs(blogs.concat(response))
+    setErrorMessage(`New blog added: Title:${response.title}`)
+    setTimeout(() => {setErrorMessage(null)}, 3000)
   }catch(error){
     console.log('error', error.message)
   }
@@ -89,11 +99,15 @@ const handleUrl = (event) => {
       { user!==null?
       <div>
         <LogoutForm user={user.username}/>
+        <Notification message={errorMessage}/>
         <InputForm handleInput={handleInput} title={title} setTitle={handleTitle} author={author} setAuthor={handleAuthor} url={url} setUrl={handleUrl}/>
         <Blog user={user.username} blogs={blogs}/>
       </div>
       :
-      <LoginForm username={username} password={password} setUsername={handleUsername} setPassword={handlePassword} handleLogin={handleLogin}/>
+      <div>
+        <Notification message={errorMessage}/>
+        <LoginForm username={username} password={password} setUsername={handleUsername} setPassword={handlePassword} handleLogin={handleLogin}/>
+      </div>
       }
     </div>
   )
