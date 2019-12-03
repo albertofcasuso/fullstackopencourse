@@ -36,8 +36,7 @@ const checkLogin=()=>{
 }
 useEffect(checkLogin,[])
 
-/*==============FIRST DATA FETCH
-=====================================================*/
+/*==============FIRST DATA FETCH=====================================================*/
   const fetchData = () =>{
     blogService.getAll().then(blog=> setBlogs(blog))
   }
@@ -76,7 +75,7 @@ const handleInput = async (event) =>{
   try{
     const response = await blogService.postBlog(newBlog,user.token)
     setBlogs(blogs.concat(response))
-    setErrorMessage(`New blog added: Title:${response.title}`)
+    setErrorMessage(`New blog added, ${response.title} by ${response.author}`)
     setTimeout(() => {setErrorMessage(null)}, 3000)
   }catch(error){
     console.log('error', error.message)
