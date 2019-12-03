@@ -1,5 +1,6 @@
 import axios from 'axios'
 const baseUrl = 'api/blogs'
+let token = null
 
 const getAll = async () => {
   try{
@@ -10,4 +11,17 @@ const getAll = async () => {
   }
 }
 
-export default { getAll }
+const postBlog = async (newBlog,newToken) => {
+  token = `bearer ${newToken}`
+  const config = {
+    headers: {Authorization: token},
+  }
+  try{
+    const response = await axios.post(baseUrl,newBlog,config)
+    return response.data
+  }catch(error){
+    console.log('error', error.message)
+  }
+}
+
+export default { getAll, postBlog }
