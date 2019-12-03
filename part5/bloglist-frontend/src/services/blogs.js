@@ -24,4 +24,14 @@ const postBlog = async (newBlog,newToken) => {
   }
 }
 
-export default { getAll, postBlog }
+const likeBlog = async (likedBlog) => {
+  const likedBlogUrl = `${baseUrl}/${likedBlog.id}`
+  try{
+    const response = await axios.put(likedBlogUrl,likedBlog)
+    return response.data
+  }catch(error){
+    console.log('error', error.message)
+  }
+}
+
+export default { getAll, postBlog,likeBlog }
