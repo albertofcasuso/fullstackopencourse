@@ -6,6 +6,7 @@ import LoginForm from './components/LoginForm'
 import LogoutForm from './components/LogoutForm'
 import InputForm from './components/InputForm'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 
 //import logo from './logo.svg';
 import './App.css';
@@ -99,7 +100,9 @@ const handleUrl = (event) => {
       <div>
         <LogoutForm user={user.username}/>
         <Notification message={errorMessage}/>
-        <InputForm handleInput={handleInput} title={title} setTitle={handleTitle} author={author} setAuthor={handleAuthor} url={url} setUrl={handleUrl}/>
+        <Togglable buttonLabel='new blog'>
+          <InputForm handleInput={handleInput} title={title} setTitle={handleTitle} author={author} setAuthor={handleAuthor} url={url} setUrl={handleUrl}/>
+        </Togglable>
         <Blog user={user.username} blogs={blogs}/>
       </div>
       :
