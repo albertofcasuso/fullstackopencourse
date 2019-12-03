@@ -9,6 +9,7 @@ const Blog = (props) => {
 
   return(
     <div>
+    <h1>Blog List</h1>
     <ul>{blogList}</ul>
     </div>
   )

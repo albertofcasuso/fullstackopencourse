@@ -2,6 +2,9 @@ import React,{useState,useEffect} from 'react'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Blog from './components/Blog'
+import LoginForm from './components/LoginForm'
+import LogoutForm from './components/LogoutForm'
+
 //import logo from './logo.svg';
 //import './App.css';
 
@@ -10,7 +13,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user,setUser] = useState(null)
-  
+
 /*==============CHECK LOGIN=====================================================*/
 const checkLogin=()=>{
   const loggedUser = window.localStorage.getItem('loggedUser')
@@ -27,7 +30,7 @@ useEffect(checkLogin,[])
   }
   useEffect(fetchData,[])
 
-/*==============LOGIN FORM=====================================================*/
+/*==============LOGIN FORM HANDLERS====================================================*/
   const handleLogin = async (event)=>{
     event.preventDefault()
     try{
@@ -40,49 +43,26 @@ useEffect(checkLogin,[])
       console.log('error', error.message)
     }
   }
-
-  const logInForm = () =>{
-    return (
-      <div>
-        <h1>Login</h1>
-      <form onSubmit={handleLogin}>
-        <div>
-        username
-          <input type="text" value={username} onChange={({target})=>setUsername(target.value)}></input>
-        </div>
-        <div>
-        password
-          <input type="password" value={password} onChange={({target})=>setPassword(target.value)}></input>
-        </div>
-        <button type="submit">login</button>
-      </form>
-      </div>
-    )
+  const handleUsername = (event) => {
+    setUsername(event.target.value)
+  }
+  const handlePassword = (event) => {
+    setPassword(event.target.value)
   }
 /*==============LOGOUT HANDLER=====================================================*/
-const logout = () =>{
-  window.localStorage.removeItem('loggedUser')
-  window.location.reload()
-}
 
-/*==============BLOG LIST=====================================================*/
-  const blogList = () =>{
-    return (
-      <div>
-      <h1>Blog List</h1>
-      <p>{user.username} is logged in</p>
-      <button onClick={logout}>Logout</button>
-        <Blog blogs={blogs}/>
-      </div>
-    )
-  }
 
   return (
     <div>
-    {user!==null?
-    blogList()
-    :logInForm()
-    }
+      { user!==null?
+      <div>
+      
+        <LogoutForm user={user.username}/>
+        <Blog user={user.username} blogs={blogs}/>
+      </div>
+      :
+      <LoginForm username={username} password={password} setUsername={handleUsername} setPassword={handlePassword} handleLogin={handleLogin}/>
+      }
     </div>
   )
 }
