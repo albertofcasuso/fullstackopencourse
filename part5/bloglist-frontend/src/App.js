@@ -79,7 +79,7 @@ const handleInput = async (event) =>{
     setErrorMessage(`New blog added, ${response.title} by ${response.author}`)
     setTimeout(() => {setErrorMessage(null)}, 3000)
   }catch(error){
-    console.log('error', error.message)
+    console.log('error on the frontend', error)
   }
 }
 

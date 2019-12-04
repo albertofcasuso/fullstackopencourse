@@ -30,7 +30,7 @@ const likeBlog = async (likedBlog) => {
     const response = await axios.put(likedBlogUrl,likedBlog)
     return response.data
   }catch(error){
-    console.log('error', error.message)
+    console.log('error on the service', error)
   }
 }
 

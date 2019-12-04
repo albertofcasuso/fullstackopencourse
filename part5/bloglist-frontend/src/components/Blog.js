@@ -6,7 +6,7 @@ const Blog = (props) => {
   const {deleteHandler} = props
   const {user} = props
 
-  const sortedBlogs = blogs.sort((a,b)=>(a.likes>b.likes?-1:1))
+  const sortedBlogs = blogs.sort((a,b)=>(a.likes>b.likes?a:b))
   const blogList = sortedBlogs.map(blog=>{
     return (
       <div key={blog.id}>
