@@ -93,6 +93,22 @@ const handleAuthor = (event) => {
 const handleUrl = (event) => {
     setUrl(event.target.value)
   }
+/*================================DELETE HANDLER=================================================*/
+  const deleteHandler = async (id) =>{
+    const blogToDelete = blogs.filter(blog=>blog.id===id?blog:null)
+    const confirmation = window.confirm(`Do you want to remove ${blogToDelete[0].title}?`)
+    if(confirmation){
+        try{
+          const response = await blogService.deleteBlog(id,user.token)
+          if(response.status === 204){
+            const newBlogList = blogs.filter(blog=>blog.id === id?null:blog)
+            setBlogs(newBlogList)
+          }
+      }catch(error){
+          console.log('error', error.message)
+      }
+    }else{return null}
+}
 /*=================================================================================*/
   return (
     <div>
@@ -103,7 +119,7 @@ const handleUrl = (event) => {
         <Togglable buttonLabel='new blog'>
           <InputForm handleInput={handleInput} title={title} setTitle={handleTitle} author={author} setAuthor={handleAuthor} url={url} setUrl={handleUrl}/>
         </Togglable>
-        <Blog user={user.username} blogs={blogs}/>
+        <Blog user={user.username} blogs={blogs} deleteHandler={deleteHandler}/>
       </div>
       :
       <div>
