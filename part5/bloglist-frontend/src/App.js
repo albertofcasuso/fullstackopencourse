@@ -119,7 +119,7 @@ const handleUrl = (event) => {
         <Togglable buttonLabel='new blog'>
           <InputForm handleInput={handleInput} title={title} setTitle={handleTitle} author={author} setAuthor={handleAuthor} url={url} setUrl={handleUrl}/>
         </Togglable>
-        <Blog user={user.username} blogs={blogs} deleteHandler={deleteHandler}/>
+        <Blog user={user} blogs={blogs} deleteHandler={deleteHandler}/>
       </div>
       :
       <div>

@@ -4,6 +4,7 @@ import blogService from '../services/blogs'
 const Post = (props) => {
     const {postInfo} = props
     const {deleteHandler} = props
+    const {user} = props
 
     const [visible, setVisible] = useState(false)
     const [likes,setLikes] = useState(postInfo.likes)
@@ -53,7 +54,7 @@ const Post = (props) => {
                 <p>Author:{postInfo.author}</p>
                 <p>Likes: {likes} <button onClick={likeHandler}>Like this blog</button> </p>
                 <p>url:<a href={postInfo.url}>{postInfo.url}</a></p>
-                <button onClick={()=>deleteHandler(postInfo.id)}>Delete</button>
+                {user.username === postInfo.user.username?<button onClick={()=>deleteHandler(postInfo.id)}>Delete</button>:null}
             </div>
         </div>
     )
