@@ -10,18 +10,18 @@ const Post = (props) => {
     const [likes,setLikes] = useState(postInfo.likes)
 
     const blogStyle = {
-      paddingTop: 10,
-      paddingLeft: 2,
-      border: 'solid',
-      borderWidth: 1,
-      marginBottom: 5
+        paddingTop: 10,
+        paddingLeft: 2,
+        border: 'solid',
+        borderWidth: 1,
+        marginBottom: 5
     }
   
     const hideWhenVisible = { display: visible ? 'none' : '' }
     const showWhenVisible = { display: visible ? '' : 'none' }
   
     const toggleVisibility = () => {
-      setVisible(!visible)
+        setVisible(!visible)
     }
 
     const likeHandler = async (event) =>{
