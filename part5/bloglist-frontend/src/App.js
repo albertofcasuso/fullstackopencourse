@@ -7,7 +7,7 @@ import LogoutForm from './components/LogoutForm'
 import InputForm from './components/InputForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
-import {useField} from './hooks'
+import {useField, useResource} from './hooks'
 
 //import logo from './logo.svg';
 import './App.css'
@@ -26,6 +26,8 @@ const App = () => {
     const author = useField('text')
     const url = useField('url')
 
+    const resources = useResource()
+
     /*==============CHECK LOGIN=====================================================*/
     const checkLogin=()=>{
         const loggedUser = window.localStorage.getItem('loggedUser')
@@ -40,7 +42,7 @@ const App = () => {
 
     /*==============FIRST DATA FETCH=====================================================*/
     const fetchData = () =>{
-        blogService.getAll().then(blog=> setBlogs(blog))
+        resources.getAll().then(blog=> setBlogs(blog))
     }
     useEffect(fetchData,[])
 
@@ -69,7 +71,7 @@ const App = () => {
             url:url.value
         }
         try{
-            const response = await blogService.postBlog(newBlog,user.token)
+            const response = await resources.postBlog(newBlog,user.token)
             setBlogs(blogs.concat(response))
             setErrorMessage(`New blog added, ${response.title} by ${response.author}`)
             setTimeout(() => {setErrorMessage(null)}, 3000)
