@@ -7,6 +7,7 @@ import LogoutForm from './components/LogoutForm'
 import InputForm from './components/InputForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
+import {useField} from './hooks'
 
 //import logo from './logo.svg';
 import './App.css'
@@ -15,8 +16,6 @@ const App = () => {
 /*==============STATE CONSTANTS=====================================================*/
     const [blogs,setBlogs] = useState([])
 
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
     const [user,setUser] = useState(null)
 
     const [title, setTitle] = useState('')
@@ -24,6 +23,9 @@ const App = () => {
     const [url, setUrl] = useState('')
 
     const [errorMessage, setErrorMessage] = useState(null)
+
+    const username = useField('text')
+    const password = useField('password')
 
     /*==============CHECK LOGIN=====================================================*/
     const checkLogin=()=>{
@@ -47,23 +49,17 @@ const App = () => {
     const handleLogin = async (event)=>{
         event.preventDefault()
         try{
-            const user = await loginService.login({username,password})
+            const user = await loginService.login({username:username.value,password:password.value})
             window.localStorage.setItem('loggedUser',JSON.stringify(user))
             setUser(user)
-            setUsername('')
-            setPassword('')
+            username.setBlank()
+            password.setBlank()
             setErrorMessage(`Welcome ${user.username}`)
             setTimeout(() => {setErrorMessage(null)}, 3000)
         }catch(error){
             setErrorMessage('Incorrect login')
             setTimeout(() => {setErrorMessage(null)}, 3000)
         }
-    }
-    const handleUsername = (event) => {
-        setUsername(event.target.value)
-    }
-    const handlePassword = (event) => {
-        setPassword(event.target.value)
     }
     /*==============INPUT HANDLERS=====================================================*/
     const handleInput = async (event) =>{
@@ -124,7 +120,7 @@ const App = () => {
                 :
                 <div>
                     <Notification message={errorMessage}/>
-                    <LoginForm username={username} password={password} setUsername={handleUsername} setPassword={handlePassword} handleLogin={handleLogin}/>
+                    <LoginForm username={username} password={password} handleLogin={handleLogin}/>
                 </div>
             }
         </div>
