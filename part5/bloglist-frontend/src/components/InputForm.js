@@ -3,11 +3,11 @@ import React from 'react'
 const InputForm = (props) => {
     const {handleInput} = props
     const {title} = props
-    const {setTitle} = props
+    delete title.reset
     const {author} = props
-    const {setAuthor} = props
+    delete author.reset
     const {url} = props
-    const {setUrl} = props
+    delete url.reset
 
     return (
         <div>
@@ -15,15 +15,15 @@ const InputForm = (props) => {
             <form onSubmit={handleInput}>
                 <div>
                 Title:
-                    <input type="text" value={title} onChange={setTitle}></input>
+                    <input {...title}></input>
                 </div>
                 <div>
                 Author:
-                    <input type="text" value={author} onChange={setAuthor}></input>
+                    <input {...author}></input>
                 </div>
                 <div>
                 url:
-                    <input type="text" value={url} onChange={setUrl}></input>
+                    <input {...url}></input>
                 </div>
                 <button type="submit">Create</button>
             </form>

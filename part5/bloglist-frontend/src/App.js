@@ -18,14 +18,13 @@ const App = () => {
 
     const [user,setUser] = useState(null)
 
-    const [title, setTitle] = useState('')
-    const [author, setAuthor] = useState('')
-    const [url, setUrl] = useState('')
-
     const [errorMessage, setErrorMessage] = useState(null)
 
     const username = useField('text')
     const password = useField('password')
+    const title = useField('text')
+    const author = useField('text')
+    const url = useField('url')
 
     /*==============CHECK LOGIN=====================================================*/
     const checkLogin=()=>{
@@ -52,8 +51,8 @@ const App = () => {
             const user = await loginService.login({username:username.value,password:password.value})
             window.localStorage.setItem('loggedUser',JSON.stringify(user))
             setUser(user)
-            username.setBlank()
-            password.setBlank()
+            username.reset()
+            password.reset()
             setErrorMessage(`Welcome ${user.username}`)
             setTimeout(() => {setErrorMessage(null)}, 3000)
         }catch(error){
@@ -65,9 +64,9 @@ const App = () => {
     const handleInput = async (event) =>{
         event.preventDefault()
         const newBlog = {
-            title:title,
-            author:author,
-            url:url
+            title:title.value,
+            author:author.value,
+            url:url.value
         }
         try{
             const response = await blogService.postBlog(newBlog,user.token)
@@ -77,17 +76,6 @@ const App = () => {
         }catch(error){
             console.log('error on the frontend', error)
         }
-    }
-
-
-    const handleTitle = (event) => {
-        setTitle(event.target.value)
-    }
-    const handleAuthor = (event) => {
-        setAuthor(event.target.value)
-    }
-    const handleUrl = (event) => {
-        setUrl(event.target.value)
     }
     /*================================DELETE HANDLER=================================================*/
     const deleteHandler = async (id) =>{
@@ -113,7 +101,7 @@ const App = () => {
                     <LogoutForm user={user.username}/>
                     <Notification message={errorMessage}/>
                     <Togglable buttonLabel='new blog'>
-                        <InputForm handleInput={handleInput} title={title} setTitle={handleTitle} author={author} setAuthor={handleAuthor} url={url} setUrl={handleUrl}/>
+                        <InputForm handleInput={handleInput} title={title} author={author} url={url}/>
                     </Togglable>
                     <Blog user={user} blogs={blogs} deleteHandler={deleteHandler}/>
                 </div>

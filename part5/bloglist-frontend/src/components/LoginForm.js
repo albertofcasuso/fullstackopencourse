@@ -6,6 +6,9 @@ const LoginForm = (props) => {
     const {password} = props
     const {handleLogin} = props
 
+    delete username.reset
+    delete password.reset
+
     return (
         <div>
             <h1>Login</h1>
@@ -25,7 +28,19 @@ const LoginForm = (props) => {
 }
 
 LoginForm.propTypes={
-    handleLogin:propTypes.func.isRequired
+    handleLogin:propTypes.func.isRequired,
+
+    username:propTypes.shape({
+        type:propTypes.string,
+        value:propTypes.string,
+        onChange:propTypes.func
+    }),
+
+    password:propTypes.shape({
+        type:propTypes.string,
+        value:propTypes.string,
+        onChange:propTypes.func
+    })
 }
 
 export default LoginForm
