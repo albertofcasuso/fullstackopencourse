@@ -3,7 +3,6 @@ import AnecdoteForm from './components/AnecdoteForm'
 import AnecdoteList from './components/AnecdoteList'
 
 const App = (props) => {
-  const anecdotes = props.store.getState()
   const store = props.store
   
   return (
