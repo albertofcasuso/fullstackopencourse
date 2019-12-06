@@ -15,6 +15,7 @@ const AnecdoteList = (props) => {
 
     return (
         <div>
+        <h2>Anecdotes</h2>
             {orderListOf(anecdotes).map(anecdote =>
         <div key={anecdote.id}>
           <div>
