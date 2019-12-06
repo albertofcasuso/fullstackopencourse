@@ -20,14 +20,17 @@ const App = (props) => {
 
   const addAnecdote = (event) =>{
     event.preventDefault()
-    const createdAnecdote = createAnecdote(event.target.anecdote.value)
-    store.dispatch(createdAnecdote)
+    store.dispatch(createAnecdote(event.target.anecdote.value))
   }
 
+  const orderListOf = (list) =>{
+    return list.sort((a,b)=>{return a.votes<b.votes?1:-1})
+  }
+  
   return (
     <div>
       <h2>Anecdotes</h2>
-      {anecdotes.map(anecdote =>
+      {orderListOf(anecdotes).map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
