@@ -3,13 +3,13 @@ import {voteAnecdote} from '../reducers/anecdoteReducer'
 
 const AnecdoteList = (props) => {
     const store = props.store
-    const anecdotes = props.store.getState()
+    const anecdotes = store.getState().anecdotes
 
     const vote = (id) =>{
         store.dispatch(voteAnecdote(id))
       }
 
-      const orderListOf = (list) =>{
+    const orderListOf = (list) =>{
         return list.sort((a,b)=>{return a.votes<b.votes?1:-1})
       }
 

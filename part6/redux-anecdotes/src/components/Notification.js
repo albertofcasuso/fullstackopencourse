@@ -1,6 +1,9 @@
 import React from 'react'
+//import switchNotification from '../reducers/notificationReducer'
 
-const Notification = () => {
+const Notification = (props) => {
+  const store = props.store
+  const notifications = store.getState().notifications
   const style = {
     border: 'solid',
     padding: 10,
@@ -8,7 +11,7 @@ const Notification = () => {
   }
   return (
     <div style={style}>
-      render here notification...
+      <p>{notifications.map(notification=>notification.message)}</p>
     </div>
   )
 }
