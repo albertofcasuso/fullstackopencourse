@@ -9,9 +9,14 @@ const Notification = (props) => {
     padding: 10,
     borderWidth: 1
   }
+
+  if (notifications.message===null){
+    return null
+  }
+
   return (
     <div style={style}>
-      <p>{notifications.map(notification=>notification.message)}</p>
+      <p>{notifications.message}</p>
     </div>
   )
 }

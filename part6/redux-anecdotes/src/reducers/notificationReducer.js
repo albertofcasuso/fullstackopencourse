@@ -1,26 +1,36 @@
 /* eslint-disable default-case */
-const initialNotification = [
-    'Insert an incredible notification here'
-]
+const initialNotification = null
 
 const asObject = (notification) => {
     return {
         message:notification
     }
 }
-/*
-export const switchNotification = (content)=>{
+
+export const setNotification = (message)=>{
     return{
-        type:'ALL'
+        type:'SET_NOTIFICATION',
+        data:message
     }
 }
-*/
-const initialState = initialNotification.map(asObject)
+
+export const removeNotification = ()=>{
+    return{
+        type:'REMOVE_NOTIFICATION',
+        data:null
+    }
+}
+
+const initialState = asObject(initialNotification)
 
 const notificationReducer = (state = initialState,action) =>{
     switch(action.type){
-        case 'ALL':
-            return state
+        case 'SET_NOTIFICATION':
+            const newState = asObject(action.data)
+            return newState
+        case 'REMOVE_NOTIFICATION':
+            const nullState = asObject(action.data)
+            return nullState
     }
     return state
 }
