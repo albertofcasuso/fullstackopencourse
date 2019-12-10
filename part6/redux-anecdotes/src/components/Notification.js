@@ -1,9 +1,9 @@
 import React from 'react'
+import {connect} from 'react-redux'
 //import switchNotification from '../reducers/notificationReducer'
 
 const Notification = (props) => {
-  const store = props.store
-  const notifications = store.getState().notifications
+  const notifications = props.notifications
   const style = {
     border: 'solid',
     padding: 10,
@@ -20,5 +20,11 @@ const Notification = (props) => {
     </div>
   )
 }
+const mapStateToProps = (state)=>{
+  return {
+    notifications:state.notifications
+  }
+}
+const connectedNotification = connect(mapStateToProps)(Notification)
 
-export default Notification
+export default connectedNotification
