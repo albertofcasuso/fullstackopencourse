@@ -12,7 +12,7 @@ const asObject = (anecdote) => {
 export const createAnecdote = (content) => {
   return {
     type: 'NEW_ANECDOTE',
-    data: {content}
+    data: content
   }
 }
 
@@ -39,7 +39,7 @@ const anecdoteReducer = (state = [], action) => {
       const stateToReturn = state.map(anecdote=>anecdote.id===votedAnecdote.id?votedAnecdote:anecdote)
       return stateToReturn
     case 'NEW_ANECDOTE':
-      return [...state,asObject(action.data.content)]
+      return [...state,action.data]
     case 'INIT_ANECDOTES':
       return action.data
   }
