@@ -34,6 +34,16 @@
       "content": "a new cool anecdote",
       "votes": 0,
       "id": "UZfgUSL"
+    },
+    {
+      "content": "another new cool anecdote",
+      "votes": 0,
+      "id": "lM32C9Z"
+    },
+    {
+      "content": "yet another anecdote",
+      "votes": 0,
+      "id": "3Q0yeZy"
     }
   ]
 }
