@@ -11,10 +11,13 @@ export const createAnecdote = (content) => {
   }
 }
 
-export const voteAnecdote = (id) => {
-  return {
-    type:'VOTE',
-    data:{id}
+export const voteAnecdote = (anecdote) => {
+  return async dispatch =>{
+    const response = await anecdoteService.voteAnecdote(anecdote)
+    dispatch({
+      type:'VOTE',
+      data:response
+    })
   }
 }
 
@@ -32,8 +35,7 @@ const anecdoteReducer = (state = [], action) => {
 
   switch (action.type) {
     case 'VOTE':
-      const anecdoteToVote = state.find(anecdote=>anecdote.id===action.data.id?anecdote:null)
-      const votedAnecdote = {...anecdoteToVote,votes:anecdoteToVote.votes+1}
+      const votedAnecdote = action.data
       const stateToReturn = state.map(anecdote=>anecdote.id===votedAnecdote.id?votedAnecdote:anecdote)
       return stateToReturn
     case 'NEW_ANECDOTE':
