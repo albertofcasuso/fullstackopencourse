@@ -7,17 +7,18 @@ const asObject = (notification) => {
     }
 }
 
-export const setNotification = (message)=>{
-    return{
-        type:'SET_NOTIFICATION',
-        data:message
-    }
-}
-
-export const removeNotification = ()=>{
-    return{
-        type:'REMOVE_NOTIFICATION',
-        data:null
+export const setNotification = (message,time)=>{
+    return async dispatch=>{
+        dispatch({
+            type:'SET_NOTIFICATION',
+            data:message
+        })
+        setTimeout(()=>{
+            dispatch({
+                type:'REMOVE_NOTIFICATION',
+                data:null
+            })
+        },time*1000)
     }
 }
 
