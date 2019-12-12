@@ -4,6 +4,7 @@ const Menu = () => {
   const padding = {
     paddingRight: 5
   }
+  
   return (
     <div>
       <a href='#' style={padding}>anecdotes</a>
