@@ -10,12 +10,13 @@ export const useField = (type) =>{
     }
 
     const reset = () =>{
+        console.log('reset')
         setValue('')
     }
 
-    return {
-        type,value,onChange,reset
-    }
+    return [{
+        type,value,onChange,
+    },reset]
 }
 
 export const useResource = () =>{
@@ -43,7 +44,16 @@ export const useResource = () =>{
         }
     }
 
+    const login = async (credentials) =>{
+        try{
+            const response = await axios.post(baseUrl,credentials)
+            return response.data
+        }catch(error){
+            console.log('error', error.message)
+        }
+    }
+
     return {
-        getAll, postBlog
+        getAll, postBlog,login
     }
 }

@@ -1,7 +1,8 @@
 import React from 'react'
+import {connect} from 'react-redux'
 
 const LogoutForm = (props) => {
-    const {user} = props
+    const user = props.user
 
     const logout = () =>{
         window.localStorage.removeItem('loggedUser')
@@ -10,10 +11,14 @@ const LogoutForm = (props) => {
 
     return (
         <div>
-            <p>{user} is logged in</p>
+            <p>{user.username} is logged in</p>
             <button onClick={logout}>Logout</button>
         </div>
     )
 }
-
-export default LogoutForm
+const mapStateToProps = (state)=>{
+    return{
+        user:state.user
+    }
+}
+export default connect(mapStateToProps)(LogoutForm)

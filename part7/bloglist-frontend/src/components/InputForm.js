@@ -3,11 +3,11 @@ import React from 'react'
 const InputForm = (props) => {
     const {handleInput} = props
     const {title} = props
-    delete title.reset
+    
     const {author} = props
-    delete author.reset
+    
     const {url} = props
-    delete url.reset
+    
 
     return (
         <div>

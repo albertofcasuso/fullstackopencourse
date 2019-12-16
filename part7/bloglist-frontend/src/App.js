@@ -1,30 +1,30 @@
 import React,{useState,useEffect} from 'react'
 import {connect} from 'react-redux'
 import blogService from './services/blogs'
-import loginService from './services/login'
 import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import LogoutForm from './components/LogoutForm'
 import InputForm from './components/InputForm'
+import Togglable from './components/Togglable'
+
 import Notification from './components/Notification'
 import {setNotification} from './reducers/notificationReducer'
-import Togglable from './components/Togglable'
+
+import {getAll} from './reducers/blogReducer'
+
+import {setUser} from './reducers/userReducer'
 import {useField, useResource} from './hooks'
 
 import './App.css'
 
 const App = (props) => {
-    
+    const user = props.user
 /*==============STATE CONSTANTS=====================================================*/
     const [blogs,setBlogs] = useState([])
 
-    const [user,setUser] = useState(null)
-
-    const username = useField('text')
-    const password = useField('password')
-    const title = useField('text')
-    const author = useField('text')
-    const url = useField('url')
+    const [title] = useField('text')
+    const [author] = useField('text')
+    const [url] = useField('url')
 
     const resources = useResource()
 
@@ -33,7 +33,7 @@ const App = (props) => {
         const loggedUser = window.localStorage.getItem('loggedUser')
         if(loggedUser){
             const user = JSON.parse(loggedUser)
-            setUser(user)
+            props.setUser(user)
             props.setNotification(`Welcome back ${user.username}`,5)
         }
     }
@@ -41,25 +41,10 @@ const App = (props) => {
 
     /*==============FIRST DATA FETCH=====================================================*/
     const fetchData = () =>{
-        resources.getAll().then(blog=> setBlogs(blog))
+        props.getAll()
     }
     useEffect(fetchData,[])
-
-    /*==============LOGIN FORM HANDLERS====================================================*/
-    const handleLogin = async (event)=>{
-        event.preventDefault()
-        try{
-            const user = await loginService.login({username:username.value,password:password.value})
-            window.localStorage.setItem('loggedUser',JSON.stringify(user))
-            console.log(user)
-            setUser(user)
-            username.reset()
-            password.reset()
-            props.setNotification(`Welcome ${user.username}`,5)
-        }catch(error){
-            props.setNotification('Incorrect login',5)
-        }
-    }
+    
     /*==============INPUT HANDLERS=====================================================*/
     const handleInput = async (event) =>{
         event.preventDefault()
@@ -97,24 +82,32 @@ const App = (props) => {
         <div>
             { user!==null?
                 <div>
-                    <LogoutForm user={user.username}/>
+                    <LogoutForm/>
                     <Notification />
                     <Togglable buttonLabel='new blog'>
                         <InputForm handleInput={handleInput} title={title} author={author} url={url}/>
                     </Togglable>
-                    <Blog user={user} blogs={blogs} deleteHandler={deleteHandler}/>
+                    <Blog deleteHandler={deleteHandler}/>
                 </div>
                 :
                 <div>
                     <Notification />
-                    <LoginForm username={username} password={password} handleLogin={handleLogin}/>
+                    <LoginForm/>
                 </div>
             }
         </div>
     )
 }
 const mapDispatchToProps = {
-    setNotification
+    setNotification,
+    getAll,
+    setUser
+}
+const mapStateToProps = (state)=>{
+    return {
+        blogs:state.blogs,
+        user:state.user
+    }
 }
 
-export default connect(null,mapDispatchToProps)(App)
+export default connect(mapStateToProps,mapDispatchToProps)(App)

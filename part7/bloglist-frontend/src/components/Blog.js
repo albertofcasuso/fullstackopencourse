@@ -1,10 +1,11 @@
 import React from 'react'
 import Post from './Post'
+import {connect} from 'react-redux'
 
 const Blog = (props) => {
-    const {blogs} = props
+    const blogs = props.blogs
     const {deleteHandler} = props
-    const {user} = props
+    const user = props.user
 
     const sortedBlogs = blogs.sort((a,b)=>(a.likes>b.likes?a:b))
     const blogList = sortedBlogs.map(blog=>{
@@ -22,5 +23,10 @@ const Blog = (props) => {
         </div>
     )
 }
-
-export default Blog
+const mapStateToProps = (state)=>{
+    return{
+        blogs:state.blogs,
+        user:state.user
+    }
+}
+export default connect(mapStateToProps)(Blog)
