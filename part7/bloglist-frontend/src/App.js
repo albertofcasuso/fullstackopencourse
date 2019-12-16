@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react'
+import {connect} from 'react-redux'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Blog from './components/Blog'
@@ -6,19 +7,18 @@ import LoginForm from './components/LoginForm'
 import LogoutForm from './components/LogoutForm'
 import InputForm from './components/InputForm'
 import Notification from './components/Notification'
+import {setNotification} from './reducers/notificationReducer'
 import Togglable from './components/Togglable'
 import {useField, useResource} from './hooks'
 
-//import logo from './logo.svg';
 import './App.css'
 
-const App = () => {
+const App = (props) => {
+    
 /*==============STATE CONSTANTS=====================================================*/
     const [blogs,setBlogs] = useState([])
 
     const [user,setUser] = useState(null)
-
-    const [errorMessage, setErrorMessage] = useState(null)
 
     const username = useField('text')
     const password = useField('password')
@@ -34,8 +34,7 @@ const App = () => {
         if(loggedUser){
             const user = JSON.parse(loggedUser)
             setUser(user)
-            setErrorMessage(`Welcome back ${user.username}`)
-            setTimeout(() => {setErrorMessage(null)}, 3000)
+            props.setNotification(`Welcome back ${user.username}`,5)
         }
     }
     useEffect(checkLogin,[])
@@ -52,14 +51,13 @@ const App = () => {
         try{
             const user = await loginService.login({username:username.value,password:password.value})
             window.localStorage.setItem('loggedUser',JSON.stringify(user))
+            console.log(user)
             setUser(user)
             username.reset()
             password.reset()
-            setErrorMessage(`Welcome ${user.username}`)
-            setTimeout(() => {setErrorMessage(null)}, 3000)
+            props.setNotification(`Welcome ${user.username}`,5)
         }catch(error){
-            setErrorMessage('Incorrect login')
-            setTimeout(() => {setErrorMessage(null)}, 3000)
+            props.setNotification('Incorrect login',5)
         }
     }
     /*==============INPUT HANDLERS=====================================================*/
@@ -73,8 +71,7 @@ const App = () => {
         try{
             const response = await resources.postBlog(newBlog,user.token)
             setBlogs(blogs.concat(response))
-            setErrorMessage(`New blog added, ${response.title} by ${response.author}`)
-            setTimeout(() => {setErrorMessage(null)}, 3000)
+            props.setNotification(`New blog added, ${response.title} by ${response.author}`,5)
         }catch(error){
             console.log('error on the frontend', error)
         }
@@ -101,7 +98,7 @@ const App = () => {
             { user!==null?
                 <div>
                     <LogoutForm user={user.username}/>
-                    <Notification message={errorMessage}/>
+                    <Notification />
                     <Togglable buttonLabel='new blog'>
                         <InputForm handleInput={handleInput} title={title} author={author} url={url}/>
                     </Togglable>
@@ -109,12 +106,15 @@ const App = () => {
                 </div>
                 :
                 <div>
-                    <Notification message={errorMessage}/>
+                    <Notification />
                     <LoginForm username={username} password={password} handleLogin={handleLogin}/>
                 </div>
             }
         </div>
     )
 }
+const mapDispatchToProps = {
+    setNotification
+}
 
-export default App
+export default connect(null,mapDispatchToProps)(App)
