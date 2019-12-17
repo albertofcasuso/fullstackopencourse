@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 
 const UserBlogs = (props) => {
     const {id} = props
+    console.log(props)
     const user = (id)=>{
         return props.userList.find(user=>user.id===id)
     }
@@ -16,6 +17,7 @@ const UserBlogs = (props) => {
     
     return (
         <div>
+        something something
         {props.userList?
         <div>
             <h2>Blogs created by {user(id).username}</h2>

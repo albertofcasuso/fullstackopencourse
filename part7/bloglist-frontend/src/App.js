@@ -1,8 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import {
-    BrowserRouter as Router,
-    Route
-  } from 'react-router-dom'
+import {BrowserRouter as Switch,Route} from 'react-router-dom'
 import {connect} from 'react-redux'
 import blogService from './services/blogs'
 import Blog from './components/Blog'
@@ -17,7 +14,6 @@ import Notification from './components/Notification'
 import {setNotification} from './reducers/notificationReducer'
 import {setUser} from './reducers/userReducer'
 import {useField, useResource} from './hooks'
-import {getAll} from './reducers/userListReducer'
 import {getAllBlogs} from './reducers/blogReducer'
 
 import './App.css'
@@ -32,11 +28,6 @@ const App = (props) => {
     const [url] = useField('url')
 
     const resources = useResource()
-
-    const getAll =()=>{
-        props.getAll()
-    }
-    useEffect(getAll,[])
 
     const fetchData = () =>{
         props.getAllBlogs()
@@ -93,19 +84,21 @@ const App = (props) => {
                 <div>
                     <LogoutForm/>
                     <Notification />
-                    <Router>
                     <Menu/>
-                    <Route exact path='/' render={()=>
-                    <div>
-                        <Togglable buttonLabel='new blog'>
-                        <InputForm handleInput={handleInput} title={title} author={author} url={url}/>
-                        </Togglable>
-                        <Blog deleteHandler={deleteHandler}/>
-                    </div>
-                    }/>
-                    <Route exact path='/users' render={()=><UserList/>}/>
-                    <Route exact path='/users/:id' render={({match})=><UserBlogs id={match.params.id}/>}/>
-                    </Router>
+                    <Switch>
+                    <Route path='/'>
+                        <div>
+                            <Togglable buttonLabel='new blog'>
+                            <InputForm handleInput={handleInput} title={title} author={author} url={url}/>
+                            </Togglable>
+                            <Blog deleteHandler={deleteHandler}/>
+                        </div>
+                    </Route>
+
+                    <Route path='/users'/>
+                        <UserList/>
+                    <Route/>
+                    </Switch>
                 </div>
                 :
                 <div>
@@ -119,7 +112,6 @@ const App = (props) => {
 const mapDispatchToProps = {
     setNotification,
     setUser,
-    getAll,
     getAllBlogs
 }
 const mapStateToProps = (state)=>{
