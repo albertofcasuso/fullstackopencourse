@@ -1,11 +1,17 @@
 import React,{useState,useEffect} from 'react'
+import {
+    BrowserRouter as Router,
+    Route, Link, Redirect, withRouter
+  } from 'react-router-dom'
 import {connect} from 'react-redux'
 import blogService from './services/blogs'
 import Blog from './components/Blog'
+import Menu from './components/Menu'
 import LoginForm from './components/LoginForm'
 import LogoutForm from './components/LogoutForm'
 import InputForm from './components/InputForm'
 import Togglable from './components/Togglable'
+import UserList from './components/UserList'
 
 import Notification from './components/Notification'
 import {setNotification} from './reducers/notificationReducer'
@@ -84,10 +90,18 @@ const App = (props) => {
                 <div>
                     <LogoutForm/>
                     <Notification />
-                    <Togglable buttonLabel='new blog'>
+                    <Router>
+                    <Menu/>
+                    <Route exact path='/' render={()=>
+                    <div>
+                        <Togglable buttonLabel='new blog'>
                         <InputForm handleInput={handleInput} title={title} author={author} url={url}/>
-                    </Togglable>
-                    <Blog deleteHandler={deleteHandler}/>
+                        </Togglable>
+                        <Blog deleteHandler={deleteHandler}/>
+                    </div>
+                    }/>
+                    <Route path='/users' render={()=><UserList/>}/>
+                    </Router>
                 </div>
                 :
                 <div>
