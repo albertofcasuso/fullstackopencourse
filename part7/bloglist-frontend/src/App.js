@@ -18,6 +18,7 @@ import {setNotification} from './reducers/notificationReducer'
 import {setUser} from './reducers/userReducer'
 import {useField, useResource} from './hooks'
 import {getAll} from './reducers/userListReducer'
+import {getAllBlogs} from './reducers/blogReducer'
 
 import './App.css'
 
@@ -36,6 +37,11 @@ const App = (props) => {
         props.getAll()
     }
     useEffect(getAll,[])
+
+    const fetchData = () =>{
+        props.getAllBlogs()
+    }
+    useEffect(fetchData,[])
     /*==============CHECK LOGIN=====================================================*/
     const checkLogin=()=>{
         const loggedUser = window.localStorage.getItem('loggedUser')
@@ -113,7 +119,8 @@ const App = (props) => {
 const mapDispatchToProps = {
     setNotification,
     setUser,
-    getAll
+    getAll,
+    getAllBlogs
 }
 const mapStateToProps = (state)=>{
     return {

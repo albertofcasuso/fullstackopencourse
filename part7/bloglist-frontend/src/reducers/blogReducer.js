@@ -1,7 +1,7 @@
 import {useResource} from '../hooks'
 const resources = useResource()
 
-export const getAll = ()=>{
+export const getAllBlogs = ()=>{
     return async dispatch =>{
         const blogs = await resources.getAll()
         dispatch({
