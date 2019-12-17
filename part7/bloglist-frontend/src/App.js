@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import {
     BrowserRouter as Router,
-    Route, Link, Redirect, withRouter
+    Route
   } from 'react-router-dom'
 import {connect} from 'react-redux'
 import blogService from './services/blogs'
@@ -12,14 +12,12 @@ import LogoutForm from './components/LogoutForm'
 import InputForm from './components/InputForm'
 import Togglable from './components/Togglable'
 import UserList from './components/UserList'
-
+import UserBlogs from './components/UserBlogs'
 import Notification from './components/Notification'
 import {setNotification} from './reducers/notificationReducer'
-
-import {getAll} from './reducers/blogReducer'
-
 import {setUser} from './reducers/userReducer'
 import {useField, useResource} from './hooks'
+import {getAll} from './reducers/userListReducer'
 
 import './App.css'
 
@@ -34,6 +32,10 @@ const App = (props) => {
 
     const resources = useResource()
 
+    const getAll =()=>{
+        props.getAll()
+    }
+    useEffect(getAll,[])
     /*==============CHECK LOGIN=====================================================*/
     const checkLogin=()=>{
         const loggedUser = window.localStorage.getItem('loggedUser')
@@ -45,12 +47,6 @@ const App = (props) => {
     }
     useEffect(checkLogin,[])
 
-    /*==============FIRST DATA FETCH=====================================================*/
-    const fetchData = () =>{
-        props.getAll()
-    }
-    useEffect(fetchData,[])
-    
     /*==============INPUT HANDLERS=====================================================*/
     const handleInput = async (event) =>{
         event.preventDefault()
@@ -84,6 +80,7 @@ const App = (props) => {
         }else{return null}
     }
     /*=================================================================================*/
+
     return (
         <div>
             { user!==null?
@@ -100,7 +97,8 @@ const App = (props) => {
                         <Blog deleteHandler={deleteHandler}/>
                     </div>
                     }/>
-                    <Route path='/users' render={()=><UserList/>}/>
+                    <Route exact path='/users' render={()=><UserList/>}/>
+                    <Route exact path='/users/:id' render={({match})=><UserBlogs id={match.params.id}/>}/>
                     </Router>
                 </div>
                 :
@@ -114,13 +112,14 @@ const App = (props) => {
 }
 const mapDispatchToProps = {
     setNotification,
-    getAll,
-    setUser
+    setUser,
+    getAll
 }
 const mapStateToProps = (state)=>{
     return {
         blogs:state.blogs,
-        user:state.user
+        user:state.user,
+        userList:state.userList
     }
 }
 

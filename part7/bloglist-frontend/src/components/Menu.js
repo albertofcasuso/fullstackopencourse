@@ -1,7 +1,6 @@
 import React from 'react'
 import {
-    BrowserRouter as Router,
-    Route, Link, Redirect, withRouter
+    Link
   } from 'react-router-dom'
 
 const Menu = (props) => {

@@ -1,28 +1,27 @@
-import React,{useEffect} from 'react'
+import React from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 import {getAll} from '../reducers/userListReducer'
 
 const UserList = (props) => {
-    const getAll =()=>{
-        props.getAll()
-    }
-    useEffect(getAll,[])
+    
     
     const userList = props.userList?props.userList.map(user=>{
         return(
             <tr key={user.id}>
-                <td>{user.username}</td>
+                <td><Link to={`/users/${user.id}`}>{user.username}</Link></td>
                 <td>{user.blogs.length}</td>
             </tr>
         )
     })
     :null
+
     return (
         <div>
         <table>
             <thead>
                 <tr>
-                    <td><h3>Username</h3></td>
+                    <td></td>
                     <td><h3>Blogs Created</h3></td>
                 </tr>
             </thead>
@@ -33,7 +32,7 @@ const UserList = (props) => {
         </div>
     )
 }
-const mapStateToProps = (state,ownProps) =>{
+const mapStateToProps = (state) =>{
     return{
         userList:state.userList
     }
