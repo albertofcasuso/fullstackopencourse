@@ -3,7 +3,6 @@ import {connect} from 'react-redux'
 import {getAll} from '../reducers/userListReducer'
 
 const UserList = (props) => {
-    console.log(props)
     const getAll =()=>{
         props.getAll()
     }
@@ -11,7 +10,7 @@ const UserList = (props) => {
     
     const userList = props.userList?props.userList.map(user=>{
         return(
-            <tr>
+            <tr key={user.id}>
                 <td>{user.username}</td>
                 <td>{user.blogs.length}</td>
             </tr>
@@ -21,7 +20,15 @@ const UserList = (props) => {
     return (
         <div>
         <table>
-            {userList}
+            <thead>
+                <tr>
+                    <td><h3>Username</h3></td>
+                    <td><h3>Blogs Created</h3></td>
+                </tr>
+            </thead>
+            <tbody>
+                {userList}
+            </tbody>
         </table>
         </div>
     )
