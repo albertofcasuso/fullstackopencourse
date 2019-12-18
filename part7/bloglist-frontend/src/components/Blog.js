@@ -1,22 +1,23 @@
 import React,{useEffect} from 'react'
 import Post from './Post'
 import {connect} from 'react-redux'
-import {getAll} from '../reducers/blogReducer'
+import {Link} from 'react-router-dom'
+import {getAllBlogs} from '../reducers/blogReducer'
 
 const Blog = (props) => {
     const blogs = props.blogs
-    const {deleteHandler} = props
-    const user = props.user
+
     /*==============FIRST DATA FETCH=====================================================*/
     const fetchData = () =>{
-        props.getAll()
+        props.getAllBlogs()
     }
     useEffect(fetchData,[])
+    
     const sortedBlogs = blogs.sort((a,b)=>(a.likes>b.likes?a:b))
     const blogList = sortedBlogs.map(blog=>{
         return (
             <div key={blog.id}>
-                <Post postInfo = {blog} deleteHandler={deleteHandler} user={user}/>
+                <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
             </div>
         )
     })
@@ -35,6 +36,6 @@ const mapStateToProps = (state)=>{
     }
 }
 const mapDispatchToProps = {
-    getAll
+    getAllBlogs
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Blog)

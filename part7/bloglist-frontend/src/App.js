@@ -1,8 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import {
-    BrowserRouter as Router,
-    Route
-  } from 'react-router-dom'
+import {Switch,Route} from 'react-router-dom'
 import {connect} from 'react-redux'
 import blogService from './services/blogs'
 import Blog from './components/Blog'
@@ -12,12 +9,13 @@ import LogoutForm from './components/LogoutForm'
 import InputForm from './components/InputForm'
 import Togglable from './components/Togglable'
 import UserList from './components/UserList'
-import UserBlogs from './components/UserBlogs'
 import Notification from './components/Notification'
 import {setNotification} from './reducers/notificationReducer'
 import {setUser} from './reducers/userReducer'
 import {useField, useResource} from './hooks'
-import {getAll} from './reducers/userListReducer'
+import {getAllBlogs} from './reducers/blogReducer'
+import UserBlogs from './components/UserBlogs'
+import Post from './components/Post'
 
 import './App.css'
 
@@ -32,10 +30,6 @@ const App = (props) => {
 
     const resources = useResource()
 
-    const getAll =()=>{
-        props.getAll()
-    }
-    useEffect(getAll,[])
     /*==============CHECK LOGIN=====================================================*/
     const checkLogin=()=>{
         const loggedUser = window.localStorage.getItem('loggedUser')
@@ -57,7 +51,7 @@ const App = (props) => {
         }
         try{
             const response = await resources.postBlog(newBlog,user.token)
-            setBlogs(blogs.concat(response))
+            setBlogs(props.blogs.concat(response))
             props.setNotification(`New blog added, ${response.title} by ${response.author}`,5)
         }catch(error){
             console.log('error on the frontend', error)
@@ -87,19 +81,30 @@ const App = (props) => {
                 <div>
                     <LogoutForm/>
                     <Notification />
-                    <Router>
                     <Menu/>
-                    <Route exact path='/' render={()=>
-                    <div>
-                        <Togglable buttonLabel='new blog'>
-                        <InputForm handleInput={handleInput} title={title} author={author} url={url}/>
-                        </Togglable>
-                        <Blog deleteHandler={deleteHandler}/>
-                    </div>
-                    }/>
-                    <Route exact path='/users' render={()=><UserList/>}/>
-                    <Route exact path='/users/:id' render={({match})=><UserBlogs id={match.params.id}/>}/>
-                    </Router>
+                    <Switch>
+                        <Route exact path='/'>
+                            <div>
+                                <Togglable buttonLabel='new blog'>
+                                <InputForm handleInput={handleInput} title={title} author={author} url={url}/>
+                                </Togglable>
+                                <Blog deleteHandler={deleteHandler}/>
+                            </div>
+
+                        </Route>
+                    
+                        <Route path='/blogs/:id'>
+                            <Post/>
+                        </Route>
+
+                        <Route exact path='/users'>
+                            <UserList/>
+                        </Route>
+
+                        <Route path='/users/:id'>
+                            <UserBlogs />
+                        </Route>
+                    </Switch>
                 </div>
                 :
                 <div>
@@ -113,7 +118,7 @@ const App = (props) => {
 const mapDispatchToProps = {
     setNotification,
     setUser,
-    getAll
+    getAllBlogs
 }
 const mapStateToProps = (state)=>{
     return {
