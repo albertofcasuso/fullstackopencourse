@@ -15,6 +15,7 @@ import {setUser} from './reducers/userReducer'
 import {useField, useResource} from './hooks'
 import {getAllBlogs} from './reducers/blogReducer'
 import UserBlogs from './components/UserBlogs'
+import Post from './components/Post'
 
 import './App.css'
 
@@ -82,21 +83,27 @@ const App = (props) => {
                     <Notification />
                     <Menu/>
                     <Switch>
-                    <Route exact path='/'>
-                        <div>
-                            <Togglable buttonLabel='new blog'>
-                            <InputForm handleInput={handleInput} title={title} author={author} url={url}/>
-                            </Togglable>
-                            <Blog deleteHandler={deleteHandler}/>
-                        </div>
-                    </Route>
+                        <Route exact path='/'>
+                            <div>
+                                <Togglable buttonLabel='new blog'>
+                                <InputForm handleInput={handleInput} title={title} author={author} url={url}/>
+                                </Togglable>
+                                <Blog deleteHandler={deleteHandler}/>
+                            </div>
 
-                    <Route exact path='/users'>
-                        <UserList/>
-                    </Route>
-                    <Route path={`/users/:id`}>
-                        <UserBlogs />
-                    </Route>
+                        </Route>
+                    
+                        <Route path='/blogs/:id'>
+                            <Post/>
+                        </Route>
+
+                        <Route exact path='/users'>
+                            <UserList/>
+                        </Route>
+
+                        <Route path='/users/:id'>
+                            <UserBlogs />
+                        </Route>
                     </Switch>
                 </div>
                 :
