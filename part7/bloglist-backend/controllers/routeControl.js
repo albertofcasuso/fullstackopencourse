@@ -2,6 +2,7 @@ const routeControl = require('express').Router()
 const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/userModel')
+const Comment = require('../models/commentModel')
 
 
 routeControl.get('/',async (request, response,next) => {
@@ -38,6 +39,24 @@ routeControl.post('/', async (request, response,next) => {
   }catch(error){
     next(error)
   }
+})
+
+routeControl.post('/:id/comments', async (request, response,next) => {
+  const body = request.body
+  const id = request.params.id
+  try{
+    const blog = await Blog.findById(id)
+    const comment = new Comment({
+      content:body.content,
+      blog:blog._id
+    })
+    const savedComment = await comment.save()
+    blog.comments = blog.comments.concat(savedComment._id)
+    await blog.save()
+    response.json(savedComment.toJSON())
+  }catch(error){
+    next(error)
+}
 })
 
 
