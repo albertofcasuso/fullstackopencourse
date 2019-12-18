@@ -8,7 +8,7 @@ const Comment = require('../models/commentModel')
 routeControl.get('/',async (request, response,next) => {
 
   try{
-    const blogs = await Blog.find({}).populate('user',{username:1,email:1})
+    const blogs = await Blog.find({}).populate('user',{username:1,email:1}).populate('comments',{content:1})
     response.json(blogs.map(blog=>blog.toJSON()))
   }catch(error){
     next(error)

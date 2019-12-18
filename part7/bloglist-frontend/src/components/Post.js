@@ -7,8 +7,8 @@ const Post = (props) => {
     const post = (id)=>{
         return props.blogs.find(post=>post.id===id)
     }
-    console.log(props.blogs)
     const postInfo = post(id)
+    console.log(postInfo.comments)
     return (
         <div>
         {postInfo?
@@ -17,6 +17,8 @@ const Post = (props) => {
                 <p>Author:{postInfo.author}</p>
                 <p>Likes: {postInfo.likes} <button>Like this blog</button> </p>
                 <p>url:<a href={postInfo.url}>{postInfo.url}</a></p>
+                <h2>Comments</h2>
+                <p>{postInfo.comments}</p>
             </div>
             :null}
         </div>
