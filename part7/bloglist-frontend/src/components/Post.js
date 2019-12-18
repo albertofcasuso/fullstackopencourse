@@ -8,7 +8,11 @@ const Post = (props) => {
         return props.blogs.find(post=>post.id===id)
     }
     const postInfo = post(id)
-    console.log(postInfo.comments)
+    const commentList = postInfo.comments.map(comment=>{
+        return(
+            <li key={comment.id}>{comment.content}</li>
+        )
+    })
     return (
         <div>
         {postInfo?
@@ -18,7 +22,7 @@ const Post = (props) => {
                 <p>Likes: {postInfo.likes} <button>Like this blog</button> </p>
                 <p>url:<a href={postInfo.url}>{postInfo.url}</a></p>
                 <h2>Comments</h2>
-                <p>{postInfo.comments}</p>
+                <p>{commentList}</p>
             </div>
             :null}
         </div>
