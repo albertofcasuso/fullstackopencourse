@@ -1,9 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {useParams} from 'react-router-dom'
 
 const UserBlogs = (props) => {
-    const {id} = props
-    console.log(props)
+    const {id} = useParams()
     const user = (id)=>{
         return props.userList.find(user=>user.id===id)
     }
@@ -17,7 +17,6 @@ const UserBlogs = (props) => {
     
     return (
         <div>
-        something something
         {props.userList?
         <div>
             <h2>Blogs created by {user(id).username}</h2>

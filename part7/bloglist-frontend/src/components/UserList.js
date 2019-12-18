@@ -1,10 +1,10 @@
 import React,{useEffect} from 'react'
 import {connect} from 'react-redux'
-import {BrowserRouter as Route,Link} from 'react-router-dom'
+import {Link,useRouteMatch} from 'react-router-dom'
 import {getAll} from '../reducers/userListReducer'
-import UserBlogs from './UserBlogs'
 
 const UserList = (props) => {
+    const match = useRouteMatch()
     
     const getAll =()=>{
         props.getAll()
@@ -14,7 +14,7 @@ const UserList = (props) => {
     const userList = props.userList?props.userList.map(user=>{
         return(
             <tr key={user.id}>
-                <td><Link to={`/users/${user.id}`}>{user.username}</Link></td>
+                <td><Link to={`${match.path}/${user.id}`}>{user.username}</Link></td>
                 <td>{user.blogs.length}</td>
             </tr>
         )
@@ -23,10 +23,6 @@ const UserList = (props) => {
 
     return (
         <div>
-        <div>
-            <Route exact path='/users/:id' render={({match})=><UserBlogs id={match.params.id}/>}/>
-        </div>
-        
         <table>
             <thead>
                 <tr>

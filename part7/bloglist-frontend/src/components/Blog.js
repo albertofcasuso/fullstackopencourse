@@ -1,12 +1,17 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import Post from './Post'
 import {connect} from 'react-redux'
+import {getAllBlogs} from '../reducers/blogReducer'
 
 const Blog = (props) => {
     const blogs = props.blogs
     const {deleteHandler} = props
     const user = props.user
     /*==============FIRST DATA FETCH=====================================================*/
+    const fetchData = () =>{
+        props.getAllBlogs()
+    }
+    useEffect(fetchData,[])
     
     const sortedBlogs = blogs.sort((a,b)=>(a.likes>b.likes?a:b))
     const blogList = sortedBlogs.map(blog=>{
@@ -31,5 +36,6 @@ const mapStateToProps = (state)=>{
     }
 }
 const mapDispatchToProps = {
+    getAllBlogs
 }
 export default connect(mapStateToProps,mapDispatchToProps)(Blog)

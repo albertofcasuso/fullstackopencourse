@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import {BrowserRouter as Switch,Route} from 'react-router-dom'
+import {Switch,Route} from 'react-router-dom'
 import {connect} from 'react-redux'
 import blogService from './services/blogs'
 import Blog from './components/Blog'
@@ -9,12 +9,12 @@ import LogoutForm from './components/LogoutForm'
 import InputForm from './components/InputForm'
 import Togglable from './components/Togglable'
 import UserList from './components/UserList'
-import UserBlogs from './components/UserBlogs'
 import Notification from './components/Notification'
 import {setNotification} from './reducers/notificationReducer'
 import {setUser} from './reducers/userReducer'
 import {useField, useResource} from './hooks'
 import {getAllBlogs} from './reducers/blogReducer'
+import UserBlogs from './components/UserBlogs'
 
 import './App.css'
 
@@ -29,10 +29,6 @@ const App = (props) => {
 
     const resources = useResource()
 
-    const fetchData = () =>{
-        props.getAllBlogs()
-    }
-    useEffect(fetchData,[])
     /*==============CHECK LOGIN=====================================================*/
     const checkLogin=()=>{
         const loggedUser = window.localStorage.getItem('loggedUser')
@@ -54,7 +50,7 @@ const App = (props) => {
         }
         try{
             const response = await resources.postBlog(newBlog,user.token)
-            setBlogs(blogs.concat(response))
+            setBlogs(props.blogs.concat(response))
             props.setNotification(`New blog added, ${response.title} by ${response.author}`,5)
         }catch(error){
             console.log('error on the frontend', error)
@@ -86,7 +82,7 @@ const App = (props) => {
                     <Notification />
                     <Menu/>
                     <Switch>
-                    <Route path='/'>
+                    <Route exact path='/'>
                         <div>
                             <Togglable buttonLabel='new blog'>
                             <InputForm handleInput={handleInput} title={title} author={author} url={url}/>
@@ -95,9 +91,12 @@ const App = (props) => {
                         </div>
                     </Route>
 
-                    <Route path='/users'/>
+                    <Route exact path='/users'>
                         <UserList/>
-                    <Route/>
+                    </Route>
+                    <Route path={`/users/:id`}>
+                        <UserBlogs />
+                    </Route>
                     </Switch>
                 </div>
                 :
