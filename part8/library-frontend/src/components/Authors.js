@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useQuery, gql } from '@apollo/client'
+import React from 'react'
+import EditAuthor from './EditAuthor'
 
 
 const Authors = (props) => {
@@ -30,7 +30,7 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
-
+<EditAuthor editAuthor={props.editAuthor}/>
     </div>
   )
 }
