@@ -169,6 +169,10 @@ const resolvers = {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  formatError:error=>{
+    console.log(error)
+    return error
+  }
 })
 
 server.listen().then(({ url }) => {
