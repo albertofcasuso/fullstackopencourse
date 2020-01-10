@@ -2,27 +2,25 @@ import React, { useState } from 'react'
 
 const EditAuthor = (props) => {
   const [author, setAuthor] = useState('')
-  const [name, setName] = useState('')
+  const [selectAuthor, setSelectAuthor] = useState('Robert Martin')
 
   const submit = async (e) => {
     e.preventDefault()
     await props.editAuthor({
-      variables:{name,date:author}
+      variables:{name:selectAuthor,date:author}
     })
     setAuthor('')
 
   }
-
+  const authorList = props.authors.map(author=>{
+    return <option value={author.name} key={author.name}>{author.name}</option>
+})
   return (
     <div>
+    <select value={selectAuthor} onChange={({target})=>setSelectAuthor(target.value)}>
+            {authorList}
+    </select>
       <form onSubmit={submit}>
-        <div>
-          Name
-          <input
-            value={name}
-            onChange={({ target }) => setName(target.value)}
-          />
-        </div>
         <div>
           DOB
           <input
