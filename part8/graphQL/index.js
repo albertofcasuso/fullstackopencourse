@@ -29,7 +29,6 @@ const typeDefs = gql`
     bookCount: Int!
   }
   type Query {
-    hello: String!
     bookCount: Int!
     authorCount: Int!
     allBooks(author: String, genre: String): [Book!]!
@@ -48,29 +47,19 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    hello: () => {
-      return "world"
-    },
-    bookCount: () => {
-      return books.length
-    },
-    authorCount: () => {
-      return authors.length
-    },
+    bookCount: () => Book.collection.countDocuments(),
+
+    authorCount: () => Author.collection.countDocuments(),
+
     allBooks: (root, args) => {
-      if (args.author || args.genre) {
-        const byAuthor = books.filter(book => book.author === args.author)
-        return args.genre
-          ? byAuthor.filter(book =>
-              book.genres.find(genre => genre === args.genre)
-            )
-          : byAuthor
+      if (args.genre) {
+        const books = Book.find({ genres: { $in: [args.genre] } })
+        return books
       }
-      return books
+      return Book.find({})
     },
-    allAuthors: () => {
-      return authors
-    }
+
+    allAuthors: () => Author.find({})
   },
   Mutation: {
     addBook: async (root, args) => {
@@ -87,27 +76,21 @@ const resolvers = {
         const newBook = await book.save()
         return newBook
       } catch (error) {
-        console.log(error)
+        throw new UserInputError(error.message, {
+          invalidArgs: args
+        })
       }
     },
-    editAuthor: (root, args) => {
-      const authorExists = authors.find(author => args.name === author.name)
-      if (authorExists) {
-        const updatedAuthor = { ...authorExists, born: args.setBornTo }
-        authors = authors.map(author =>
-          author.name === args.name ? updatedAuthor : author
-        )
-        return updatedAuthor
-      } else {
-        return null
-      }
+    editAuthor: async (root, args) => {
+      const authorExists = await Author.findOne({ name: args.name })
+      authorExists.born = args.setBornTo
+      return authorExists.save()
     }
   },
   Author: {
     bookCount: root => {
-      const countBooks = books.filter(book => book.author === root.name)
-
-      return countBooks.length
+      const countBooks = Book.find({ author: root })
+      return countBooks.count()
     }
   }
 }
