@@ -12,7 +12,7 @@ mongoose
     console.log("Connected to MongoDB")
   })
   .catch(error => {
-    console.log("this is a message")
+    console.log(error.message, "this is a message")
   })
 
 const typeDefs = gql`
@@ -28,13 +28,24 @@ const typeDefs = gql`
     born: Int
     bookCount: Int!
   }
+  type User {
+    username: String!
+    favoriteGenre: String!
+    id: ID!
+  }
+  type Token {
+    value: String!
+  }
   type Query {
+    me: User
     bookCount: Int!
     authorCount: Int!
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
   }
   type Mutation {
+    createUser(username: String!, favoriteGenre: String!): User
+    login(username: String, password: String!): Token
     addBook(
       title: String!
       published: Int!
